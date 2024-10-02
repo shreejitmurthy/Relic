@@ -3,7 +3,6 @@
 //
 
 #include "Window.hpp"
-#include "Keyboard.hpp"
 #include <log/log.h>
 
 Window::Window(WindowArgs args) : _width(args.width), _height(args.height), _title(args.title) {
