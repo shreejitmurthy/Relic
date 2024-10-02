@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include <SDL3/SDL.h>
+#include "SDL/include/SDL3/SDL.h"
 #include <vector>
 
 #define MAX_KEYS 322
