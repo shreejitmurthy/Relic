@@ -1,3 +1,3 @@
 ## Roadmap:
-- [ ] **ENG**: Camera2D
+- [X] **ENG**: Camera2D
 - [ ] **ENG**: Text Rendering
