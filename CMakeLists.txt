@@ -16,11 +16,11 @@ set(RELIC_SOURCES
         vendor/glad/glad.c
         vendor/log/log.c
         Engine/src/Texture.cpp
-        Engine/src/Texture.hpp
+        Engine/include/Texture.hpp
 )
 
 include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/include
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/glad
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/glm
 )
