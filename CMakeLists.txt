@@ -13,10 +13,10 @@ set(RELIC_SOURCES
         Engine/src/Window.cpp
         Engine/src/Keyboard.cpp
         Engine/src/Shader.cpp
+        Engine/src/Texture.cpp
+        Engine/src/Camera2D.cpp
         vendor/glad/glad.c
         vendor/log/log.c
-        Engine/src/Texture.cpp
-        Engine/include/Texture.hpp
 )
 
 include_directories(
