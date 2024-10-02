@@ -3,8 +3,6 @@
 #include "Math.hpp"
 #include "Texture.hpp"
 
-// Next step: Camera2D
-
 int main() {
     Window window((WindowArgs){
             .title = "Window",
