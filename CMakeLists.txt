@@ -15,6 +15,8 @@ set(RELIC_SOURCES
         Engine/src/Shader.cpp
         vendor/glad/glad.c
         vendor/log/log.c
+        Engine/src/Texture.cpp
+        Engine/src/Texture.hpp
 )
 
 include_directories(
