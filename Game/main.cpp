@@ -36,15 +36,13 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-//        textureShader.use();
-//        textureShader.set_mat4("projection", projection);
         cam.attach();
 
         container.draw((TextureDrawArgs){
             .position = position,
             .quad = quad,
             .sx = 1, .sy = 1,
-            .tint = glm::vec4(1, 1, 1, 1),
+            .tint = glm::vec4(1, 0, 0, 1),
             .shader = textureShader,
         });
 
