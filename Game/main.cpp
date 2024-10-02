@@ -2,6 +2,7 @@
 #include "Shader.hpp"
 #include "Math.hpp"
 #include "Texture.hpp"
+#include "Camera2D.hpp"
 
 int main() {
     Window window((WindowArgs){
@@ -21,6 +22,10 @@ int main() {
 
     Texture container("../Game/resources/container.png");
 
+    Camera2D cam(textureShader, 800, 600);
+    cam.setPosition(position);
+    cam.setZoom(1);
+
     glm::mat4 projection = glm::ortho(0.f, 800.f, 600.f, 0.f, -1.f, 1.f);
 
     while (window.windowOpen()) {
@@ -31,8 +36,9 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        textureShader.use();
-        textureShader.set_mat4("projection", projection);
+//        textureShader.use();
+//        textureShader.set_mat4("projection", projection);
+        cam.attach();
 
         container.draw((TextureDrawArgs){
             .position = position,
@@ -42,6 +48,7 @@ int main() {
             .shader = textureShader,
         });
 
+        cam.detach();
 
         window.refresh();
     }
