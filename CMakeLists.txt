@@ -7,6 +7,7 @@ include_directories(vendor)
 
 add_subdirectory(vendor/SDL)
 add_subdirectory(vendor/glm)
+add_subdirectory(vendor/freetype)
 
 set(RELIC_SOURCES
         Game/main.cpp
@@ -15,6 +16,7 @@ set(RELIC_SOURCES
         Engine/src/Shader.cpp
         Engine/src/Texture.cpp
         Engine/src/Camera2D.cpp
+        Engine/src/Font.cpp
         vendor/glad/glad.c
         vendor/log/log.c
 )
@@ -33,6 +35,7 @@ target_link_libraries(Relic
         OpenGL::GL
         glm::glm
         SDL3::SDL3
+        freetype
 )
 
 # Define compile-time definitions (for the logger)
