@@ -108,7 +108,7 @@ void Texture::draw(TextureDrawArgs args) {
     model = glm::scale(model, finalScale);
     tint = is_zero_colour(args.tint)
                      ? glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
-                     : glm::vec4(args.tint.x, args.tint.y, args.tint.z, args.tint.w);
+                     : glm::vec4(args.tint.r, args.tint.g, args.tint.b, args.tint.a);
 
     args.shader.use();
     args.shader.set_mat4("model", model);  // Pass the transformation matrix
