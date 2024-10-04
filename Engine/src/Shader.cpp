@@ -90,11 +90,11 @@ Shader::Shader(ShaderArgs args) {
     checkCompileErrors(fragment, "FRAGMENT");
 
     // shader Program
-    _ID = glCreateProgram();
-    glAttachShader(_ID, vertex);
-    glAttachShader(_ID, fragment);
-    glLinkProgram(_ID);
-    checkCompileErrors(_ID, "PROGRAM");
+    ID = glCreateProgram();
+    glAttachShader(ID, vertex);
+    glAttachShader(ID, fragment);
+    glLinkProgram(ID);
+    checkCompileErrors(ID, "PROGRAM");
 
     // delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex);
@@ -105,14 +105,19 @@ Shader::Shader(ShaderArgs args) {
 }
 
 void Shader::use() {
-    glUseProgram(_ID);
+    glUseProgram(ID);
 }
 
 void Shader::set_mat4(const char* name, glm::mat4 mat) {
-    unsigned int location = glGetUniformLocation(_ID, name);
+    unsigned int location = glGetUniformLocation(ID, name);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
-void Shader::set_vec4(const char *name, glm::vec4 vec) {
-    glUniform4f(glGetUniformLocation(_ID, name), vec[0], vec[1], vec[2], vec[3]);
+void Shader::set_vec3(const char *name, glm::vec3 vec) {
+    glUniform3f(glGetUniformLocation(ID, name), vec.x, vec.y, vec.z);
 }
+
+void Shader::set_vec4(const char *name, glm::vec4 vec) {
+    glUniform4f(glGetUniformLocation(ID, name), vec.x, vec.y, vec.z, vec.w);
+}
+

@@ -17,8 +17,9 @@ public:
     Shader(ShaderArgs args);
     void use();
     void set_mat4(const char* name, glm::mat4 mat);
+    void set_vec3(const char* name, glm::vec3 vec);
     void set_vec4(const char* name, glm::vec4 vec);
-    unsigned int _ID;
+    unsigned int ID;
 private:
     void checkCompileErrors(unsigned int shader, const char* type);
     char* readFile(const char* filePath);
