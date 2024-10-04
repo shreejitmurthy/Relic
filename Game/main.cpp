@@ -11,8 +11,8 @@ const int screenWidth = 800, screenHeight = 600;
 
 int main() {
     Window window((WindowArgs){
-        .title  = "Window",
-        .width  = screenWidth,
+        .title = "Window",
+        .width = screenWidth,
         .height = screenHeight,
     });
 
