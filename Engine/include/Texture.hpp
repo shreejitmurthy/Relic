@@ -18,6 +18,7 @@ typedef struct {
     glm::vec2 position;
     TextureQuad quad;
     glm::vec2 scale;
+    float rotation;
     glm::vec4 tint;
     Shader& shader;
 } TextureDrawArgs;

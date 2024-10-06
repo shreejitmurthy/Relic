@@ -91,7 +91,7 @@ bool is_zero_colour(glm::vec4 colour) {
 }
 
 void Texture::draw(TextureDrawArgs args) {
-    if (args.quad.w == 0.0f) {
+    if (args.quad.w == 0.f) {
         args.quad = (TextureQuad){0, 0, static_cast<float>(_width), static_cast<float>(_height)};
     }
     _applyQuad(args.quad);
@@ -104,10 +104,16 @@ void Texture::draw(TextureDrawArgs args) {
     model = glm::translate(model, glm::vec3(position, 0.f));
 
     // Scaling
-    glm::vec3 finalScale = glm::vec3(args.scale.x == 0 ? 1.0f : args.scale.x, args.scale.y == 0 ? 1.0f : args.scale.y, 1.0f);
+    glm::vec3 finalScale = glm::vec3(args.scale.x == 0 ? 1.f : args.scale.x, args.scale.y == 0 ? 1.0f : args.scale.y, 1.0f);
     model = glm::scale(model, finalScale);
+
+    // Rotation
+    float rot = glm::radians(args.rotation);
+    model = glm::rotate(model, rot, glm::vec3(0.f, 0.f, 1.f));
+
+    // Colour tinting
     tint = is_zero_colour(args.tint)
-                     ? glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+                     ? glm::vec4(1.f, 1.f, 1.f, 1.f)
                      : glm::vec4(args.tint.r, args.tint.g, args.tint.b, args.tint.a);
 
     args.shader.use();
