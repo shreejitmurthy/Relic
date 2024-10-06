@@ -4,10 +4,68 @@
 #include "Math.hpp"
 #include "Texture.hpp"
 #include "Camera2D.hpp"
+#include "Actor.hpp"
 
 #include <cmath>
+#include <iostream>
 
 const int screenWidth = 800, screenHeight = 600;
+
+class Player : Actor {
+public:
+    Player(std::string path, TextureQuad quad = { 0, 0, 0, 0 }, const glm::vec2& position = { 0, 0 }, const glm::vec2& scale = { 1, 1 })
+    {
+        _texture = new Texture(path);
+        this->position = position;
+        this->scale = scale;
+        _tintTime = 0.0f;
+        _tintUpdateSpeed = 0.05f;
+        _tint = {1, 1, 1, 1};
+        this->quad = quad;
+
+    }
+
+    void update(Keyboard* kb, float deltaTime) override {
+        // update based on keyboard input
+        _tintTime += _tintUpdateSpeed;
+        _tint.a = (sin(_tintTime) + 1.0f) / 2.0f;
+
+        if (kb->isDown(SDLK_LEFT)) {
+            position.x -= 1;
+            std::cout << "Container x-pos: " << position.x << std::endl;
+        }
+    }
+
+    void render(Shader shader) override {
+        TextureQuad drawQuad;
+        if (quad.w == 0 || quad.h == 0) {
+            drawQuad = {
+                    0, 0,
+                    static_cast<float>(_texture->getWidth()),
+                    static_cast<float>(_texture->getHeight())
+            };
+        } else {
+            drawQuad = quad;
+        }
+        _texture->draw((TextureDrawArgs){
+                .position = position,
+                .quad = drawQuad,
+                .scale = scale,
+                .tint = _tint,
+                .shader = shader,
+        });
+    }
+
+    glm::vec2 position;
+    glm::vec2 scale;
+    TextureQuad quad;
+    float moveSpeed;
+private:
+    Texture* _texture;
+    glm::vec4 _tint;
+    float _tintTime;
+    float _tintUpdateSpeed;
+};
 
 int main() {
     Window window((WindowArgs){
@@ -29,14 +87,14 @@ int main() {
     glm::vec2 position = glm::vec2(400, 300);
     glm::vec2 scale = glm::vec2(1, 1);
 
-    TextureQuad quad = {0, 0, 256, 256};
+    Player player("../Game/resources/container.png", {0, 0, 256, 256}, position, {1, 1});
 
-    Texture container("../Game/resources/container.png");
-    glm::vec4 containerTint = {1, 1, 1, 1};
+
+    Texture knight("../Game/resources/knight.png");
 
     Camera2D cam(textureShader, screenWidth, screenHeight);
-    cam.setPosition(position);
-    cam.setZoom(1);
+    cam.setPosition({0, 0});
+    cam.setZoom(0.5);
 
     glm::mat4 fontProjection = glm::ortho(
             0.f, static_cast<float>(screenWidth),
@@ -45,31 +103,29 @@ int main() {
 
     Font font("../Game/resources/Roboto-Regular.ttf");
 
-    float time = 0.0f;
-    const float speed = 0.05f;
-
     while (window.windowOpen()) {
         if (window.kb->isDown(SDLK_ESCAPE)) {
             window.open = false;
         }
 
-        time += speed;
-        containerTint.a = (sin(time) + 1.0f) / 2.0f;
+        player.update(window.kb, 0.f);
+        cam.setPosition(player.position);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         cam.attach();
 
-        container.draw((TextureDrawArgs){
-            .position = position,
-            .quad = quad,
-            .sx = 1, .sy = 1,
-            .tint = containerTint,
+        player.render(textureShader);
+
+        knight.draw((TextureDrawArgs){
+            .position = {200, 300},
+            .scale = {3, 3},
             .shader = textureShader,
         });
 
         cam.detach();
+
 
         fontShader.use();
         fontShader.set_mat4("projection", fontProjection);
