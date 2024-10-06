@@ -104,7 +104,7 @@ void Texture::draw(TextureDrawArgs args) {
     model = glm::translate(model, glm::vec3(position, 0.f));
 
     // Scaling
-    glm::vec3 finalScale = glm::vec3(args.sx == 0 ? 1.0f : args.sx, args.sy == 0 ? 1.0f : args.sy, 1.0f);
+    glm::vec3 finalScale = glm::vec3(args.scale.x == 0 ? 1.0f : args.scale.x, args.scale.y == 0 ? 1.0f : args.scale.y, 1.0f);
     model = glm::scale(model, finalScale);
     tint = is_zero_colour(args.tint)
                      ? glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
@@ -119,6 +119,14 @@ void Texture::draw(TextureDrawArgs args) {
     glBindVertexArray(_VAO);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+int Texture::getWidth() {
+    return _width;
+}
+
+int Texture::getHeight() {
+    return _height;
 }
 
 Texture::~Texture() {
