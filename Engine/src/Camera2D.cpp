@@ -39,6 +39,7 @@ glm::mat4 Camera2D::getProjection() {
 }
 
 void Camera2D::attach() {
+    _shader->use();
     _shader->set_mat4("view", getView());
     _shader->set_mat4("projection", getProjection());
 }
