@@ -10,13 +10,18 @@ add_subdirectory(vendor/glm)
 add_subdirectory(vendor/freetype)
 
 set(RELIC_SOURCES
+        # Game
         Game/main.cpp
+
+        # Engine
         Engine/src/Window.cpp
         Engine/src/Keyboard.cpp
         Engine/src/Shader.cpp
         Engine/src/Texture.cpp
         Engine/src/Camera2D.cpp
         Engine/src/Font.cpp
+
+        # Vendor
         vendor/glad/glad.c
         vendor/log/log.c
 )
