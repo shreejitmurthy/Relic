@@ -9,19 +9,20 @@ add_subdirectory(vendor/SDL)
 add_subdirectory(vendor/glm)
 add_subdirectory(vendor/freetype)
 
-set(RELIC_SOURCES
-        # Game
-        Game/main.cpp
-
-        # Engine
+set(ENGINE_SOURCES
         Engine/src/Window.cpp
         Engine/src/Keyboard.cpp
         Engine/src/Shader.cpp
         Engine/src/Texture.cpp
         Engine/src/Camera2D.cpp
         Engine/src/Font.cpp
+)
 
-        # Vendor
+set(GAME_SOURCES
+        Game/main.cpp
+)
+
+set(DEP_SOURCES
         vendor/glad/glad.c
         vendor/log/log.c
 )
@@ -34,7 +35,7 @@ include_directories(
 
 find_package(OpenGL REQUIRED)
 
-add_executable(Relic ${RELIC_SOURCES})
+add_executable(Relic ${ENGINE_SOURCES} ${GAME_SOURCES} ${DEP_SOURCES})
 
 target_link_libraries(Relic
         OpenGL::GL
