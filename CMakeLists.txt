@@ -9,6 +9,8 @@ add_subdirectory(vendor/SDL)
 add_subdirectory(vendor/glm)
 add_subdirectory(vendor/freetype)
 
+set(IMGUI_DIR "vendor/imgui")
+
 set(ENGINE_SOURCES
         Engine/src/Window.cpp
         Engine/src/Keyboard.cpp
@@ -25,12 +27,21 @@ set(GAME_SOURCES
 set(DEP_SOURCES
         vendor/glad/glad.c
         vendor/log/log.c
+        ${IMGUI_DIR}/imgui.cpp
+        ${IMGUI_DIR}/imgui_demo.cpp
+        ${IMGUI_DIR}/imgui_draw.cpp
+        ${IMGUI_DIR}/imgui_tables.cpp
+        ${IMGUI_DIR}/imgui_widgets.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_sdl3.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/include
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/glad
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/glm
+        ${IMGUI_DIR}
+        ${IMGUI_DIR}/backend
 )
 
 find_package(OpenGL REQUIRED)
