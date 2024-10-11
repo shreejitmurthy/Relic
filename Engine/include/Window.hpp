@@ -26,6 +26,7 @@ public:
     SDL_GLContext ctx;
     Keyboard* kb;
     bool open;
+    SDL_Event event;
 private:
     int _width, _height;
     std::string _title;
