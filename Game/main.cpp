@@ -139,7 +139,6 @@ int main() {
             static float f = 0.0f;
             static int counter = 0;
 
-            // GUI Window
             ImGui::Begin("Debug", nullptr, im_window_flags);
 
             ImGui::SetWindowPos({5, 5});
