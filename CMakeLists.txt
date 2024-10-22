@@ -3,30 +3,31 @@ project(Relic)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(vendor)
+include_directories(Vendor)
 
-add_subdirectory(vendor/SDL)
-add_subdirectory(vendor/glm)
-add_subdirectory(vendor/freetype)
+add_subdirectory(Vendor/SDL)
+add_subdirectory(Vendor/glm)
+add_subdirectory(Vendor/freetype)
 
-set(IMGUI_DIR "vendor/imgui")
+set(IMGUI_DIR "Vendor/imgui")
 
 set(ENGINE_SOURCES
-        Engine/src/Window.cpp
-        Engine/src/Keyboard.cpp
-        Engine/src/Shader.cpp
-        Engine/src/Texture.cpp
-        Engine/src/Camera2D.cpp
-        Engine/src/Font.cpp
+        Engine/Source/Window.cpp
+        Engine/Source/Keyboard.cpp
+        Engine/Source/Shader.cpp
+        Engine/Source/Texture.cpp
+        Engine/Source/Camera2D.cpp
+        Engine/Source/Font.cpp
 )
 
 set(GAME_SOURCES
         Game/main.cpp
+        Game/Source/Player.cpp
 )
 
 set(DEP_SOURCES
-        vendor/glad/glad.c
-        vendor/log/log.c
+        Vendor/glad/glad.c
+        Vendor/log/log.c
         ${IMGUI_DIR}/imgui.cpp
         ${IMGUI_DIR}/imgui_demo.cpp
         ${IMGUI_DIR}/imgui_draw.cpp
@@ -37,9 +38,10 @@ set(DEP_SOURCES
 )
 
 include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/glad
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/glm
+        ${CMAKE_CURRENT_SOURCE_DIR}/Game/Include
+        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Include
+        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Vendor/glad
+        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Vendor/glm
         ${IMGUI_DIR}
         ${IMGUI_DIR}/backend
 )

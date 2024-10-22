@@ -75,7 +75,7 @@ Shader::Shader(ShaderArgs args) {
     char* vertexCode = readFile(args.vertex_path.c_str());
     char* fragmentCode = readFile(args.fragment_path.c_str());
 
-    // 2. compile shaders
+    // 2. compile Shaders
     unsigned int vertex, fragment;
     // vertex shader
     vertex = glCreateShader(GL_VERTEX_SHADER);
@@ -96,7 +96,7 @@ Shader::Shader(ShaderArgs args) {
     glLinkProgram(ID);
     checkCompileErrors(ID, "PROGRAM");
 
-    // delete the shaders as they're linked into our program now and no longer necessary
+    // delete the Shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 

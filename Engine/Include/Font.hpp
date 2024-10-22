@@ -27,7 +27,7 @@ struct {
 typedef struct {
     std::string text;
     glm::vec2 position;
-    glm::vec3 colour;
+    glm::vec4 colour;
     float scale;
     Shader shader;
 } FontPrintArgs;

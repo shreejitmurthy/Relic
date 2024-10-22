@@ -77,7 +77,7 @@ Font::~Font() {
 }
 
 void Font::print(FontPrintArgs args) {
-    args.shader.set_vec3("textColor", args.colour);
+    args.shader.set_vec4("textColor", args.colour);
 
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(_VAO);
