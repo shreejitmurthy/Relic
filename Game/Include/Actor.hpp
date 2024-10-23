@@ -16,5 +16,4 @@ public:
     virtual void render(Shader shader) = 0;
 
 protected:
-    Texture* texture;
 };
