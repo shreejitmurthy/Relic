@@ -14,6 +14,4 @@ public:
     virtual void update(Keyboard* kb, float deltaTime) = 0;
     // Render method, also meant to be overridden
     virtual void render(Shader shader) = 0;
-
-protected:
 };
