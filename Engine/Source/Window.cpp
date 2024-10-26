@@ -18,6 +18,9 @@ Window::Window(WindowArgs args) : _width(args.width), _height(args.height), _tit
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 
+    _previousTime = SDL_GetTicks();
+    deltaTime = 0.0f;
+
     open = true;
 
     window = SDL_CreateWindow(_title.c_str(), _width, _height, SDL_WINDOW_OPENGL);
@@ -45,6 +48,9 @@ Window::~Window() {
 }
 
 bool Window::windowOpen() {
+    _currentTime = SDL_GetTicks();
+    deltaTime = (_currentTime - _previousTime) / 1000.0f;  // Convert to seconds
+    _previousTime = _currentTime;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_EVENT_QUIT:
