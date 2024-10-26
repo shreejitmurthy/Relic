@@ -15,6 +15,7 @@ int main() {
         .height = screenHeight,
     });
 
+
     Shader textureShader((ShaderArgs){
         .vertex_path = "../Game/Shaders/texture.vert",
         .fragment_path = "../Game/Shaders/texture.frag",
@@ -28,11 +29,11 @@ int main() {
     glm::vec2 position = glm::vec2(400, 300);
     glm::vec2 scale = glm::vec2(1, 1);
 
-    Player player("../Game/Resources/V1/Character Idle 48x48.png", {0, 0, 256, 256}, position, scale);
+    Player player(position, scale);
 
     Camera2D cam(textureShader, screenWidth, screenHeight);
     cam.setPosition({0, 0});
-    cam.setZoom(1);
+    cam.setZoom(2);
 
     glm::mat4 fontProjection = glm::ortho(
             0.f, static_cast<float>(screenWidth),
@@ -46,7 +47,7 @@ int main() {
             window.open = false;
         }
 
-        player.update(window.kb, 0.f);
+        player.update(window.kb, window.deltaTime);
         cam.setPosition(player.position);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.f);
