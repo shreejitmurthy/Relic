@@ -25,10 +25,10 @@ Spritesheet::Spritesheet(std::string path, int frameWidth, int frameHeight) {
     frameDimensions = {frameWidth, frameHeight};
 }
 
-std::vector<TextureQuad> Spritesheet::getFramesInRow(int sx, int sy, int fx, int fy) const {
+std::vector<TextureQuad> Spritesheet::getFramesInRow(int sRow, int sCol, int fRow, int fCol) const {
     std::vector<TextureQuad> f;
-    for (int y = sy; y <= fy; ++y) {
-        for (int x = sx; x <= fx; ++x) {
+    for (int y = sCol; y <= fCol; ++y) {
+        for (int x = sRow; x <= fRow; ++x) {
             float xPos = (x - 1) * frameDimensions.x;
             float yPos = (y - 1) * frameDimensions.y;
 
