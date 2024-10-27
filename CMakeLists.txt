@@ -19,7 +19,7 @@ set(ENGINE_SOURCES
         Engine/Source/Camera2D.cpp
         Engine/Source/Font.cpp
         Game/Source/Spritesheet.cpp
-        Game/Include/Spritesheet.h
+        Engine/Source/Shape.cpp
 )
 
 set(GAME_SOURCES
