@@ -2,7 +2,7 @@
 // Created by Shreejit Murthy on 26/10/2024.
 //
 
-#include "Spritesheet.h"
+#include "Spritesheet.hpp"
 
 Animation::Animation(std::vector<TextureQuad> frames, float delay) {
     this->frames = frames;
@@ -41,7 +41,7 @@ std::vector<TextureQuad> Spritesheet::getFramesInRow(int sRow, int sCol, int fRo
 Animation Spritesheet::newAnimation(const std::array<int, 2>& s, const std::array<int, 2>& f, float delay) {
     auto [sx, sy] = s;
     auto [fx, fy] = f;
-    auto frames = getFramesInRow(sy, sx, fy + 1, fx);
+    auto frames = getFramesInRow(sy, sx, fy, fx);
 
     return Animation(frames, delay);
 }
