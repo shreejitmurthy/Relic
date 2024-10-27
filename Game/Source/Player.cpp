@@ -14,7 +14,7 @@ Player::Player(const glm::vec2 &position, const glm::vec2 &scale) {
     tint = {1, 1, 1, 1};
 
     sheet = std::make_shared<Spritesheet>("../Game/Resources/V1/player_V1.png", 48, 48);
-    animations[IDLE] = std::make_shared<Animation>(sheet->newAnimation({1, 1}, {1, 9}, 0.1));
+    animations[IDLE] = std::make_shared<Animation>(sheet->newAnimation({1, 1}, {1, 10}, 0.1));
     currentAnimation = animations[IDLE];
 }
 
@@ -28,11 +28,11 @@ void Player::update(Keyboard *kb, float deltaTime) {
     currentAnimation->update(deltaTime);
 }
 
-void Player::render(Shader shader) {
+void Player::render(Shader textureShader) {
     sheet->draw((SpritesheetDrawArgs){
         .animation = *currentAnimation,
         .position = position,
         .tint = tint,
-        .shader = shader
+        .shader = textureShader
     });
 }

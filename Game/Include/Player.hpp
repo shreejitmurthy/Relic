@@ -23,7 +23,7 @@ public:
     ~Player() override = default;
 
     void update(Keyboard* kb, float deltaTime) override;
-    void render(Shader shader) override;
+    void render(Shader textureShader) override;
 
     glm::vec2 position;
 
