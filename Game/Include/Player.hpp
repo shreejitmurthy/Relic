@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <memory>
 
-#include "Spritesheet.h"
+#include "Spritesheet.hpp"
 
 enum PLAYER_STATES {
     IDLE,
@@ -17,9 +17,7 @@ enum PLAYER_STATES {
 
 class Player : Actor {
 public:
-    Player(const glm::vec2& position = { 0, 0 },
-           const glm::vec2& scale = { 1, 1 }
-    );
+    Player();
     ~Player() override = default;
 
     void update(Keyboard* kb, float deltaTime) override;
@@ -30,6 +28,7 @@ public:
     std::shared_ptr<Spritesheet> sheet;
     std::unordered_map<PLAYER_STATES, std::shared_ptr<Animation>> animations;
     std::shared_ptr<Animation> currentAnimation;
+    PLAYER_STATES state;
 private:
     glm::vec2 scale;
     float moveSpeed;
