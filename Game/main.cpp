@@ -6,6 +6,10 @@
 
 #include "Player.hpp"
 
+#include <imgui/imgui.h>
+#include <imgui/backends/imgui_impl_sdl3.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
+
 const int screenWidth = 800, screenHeight = 600;
 
 int main() {
@@ -15,6 +19,19 @@ int main() {
         .height = screenHeight,
     });
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.IniFilename = nullptr;
+
+    ImGuiWindowFlags im_window_flags = 0;
+//    im_window_flags |= ImGuiWindowFlags_NoResize;
+//    im_window_flags |= ImGuiWindowFlags_NoMove;
+
+    ImGui_ImplSDL3_InitForOpenGL(window.window, window.ctx);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    ImGui::StyleColorsDark();
 
     Shader textureShader((ShaderArgs){
         .vertex_path = "../Game/Shaders/texture.vert",
@@ -47,8 +64,32 @@ int main() {
             window.open = false;
         }
 
+        ImGui_ImplSDL3_ProcessEvent(&window.event);
+
         player.update(window.kb, window.deltaTime);
         cam.setPosition(player.position);
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplSDL3_NewFrame();
+        ImGui::NewFrame();
+
+        {
+            static float f = 0.0f;
+            static int counter = 0;
+
+            ImGui::Begin("Debug", nullptr, im_window_flags);
+
+            ImGui::SetWindowPos({5, 5});
+
+            ImGui::Text("Player Animation Index: %d", player.currentAnimation->currentIndex);
+
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 0.5));
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+            ImGui::PopStyleColor();
+            ImGui::End();
+        }
+
+        ImGui::Render();
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -62,6 +103,8 @@ int main() {
         fontShader.use();
         fontShader.set_mat4("projection", fontProjection);
 
+//        std::string index = "Current Animation Index: " + std::to_string(player.currentAnimation->currentIndex);
+
         font.print((FontPrintArgs){
             .text = "Sigma Game",
             .position = {10, 10},
@@ -70,6 +113,7 @@ int main() {
             .shader = fontShader,
         });
 
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         window.refresh();
     }
 
