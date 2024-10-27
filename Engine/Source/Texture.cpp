@@ -117,8 +117,8 @@ void Texture::draw(TextureDrawArgs args) {
                      : glm::vec4(args.tint.r, args.tint.g, args.tint.b, args.tint.a);
 
     args.shader.use();
-    args.shader.set_mat4("model", model);  // Pass the transformation matrix
-    args.shader.set_vec4("tint", tint);    // Pass the tint color
+    args.shader.set_mat4(args.shader.uniforms.model.c_str(), model);  // Pass the transformation matrix
+    args.shader.set_vec4(args.shader.uniforms.tint.c_str(), tint);    // Pass the tint color
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _ID);
