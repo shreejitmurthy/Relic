@@ -1,8 +1,9 @@
 #include "Window.hpp"
-#include "Font.hpp"
 #include "Shader.hpp"
+#include "Font.hpp"
 #include "Math.hpp"
 #include "Camera2D.hpp"
+#include "Shape.hpp"
 
 #include "Player.hpp"
 
@@ -34,19 +35,27 @@ int main() {
     ImGui::StyleColorsDark();
 
     Shader textureShader((ShaderArgs){
-        .vertex_path = "../Game/Shaders/texture.vert",
-        .fragment_path = "../Game/Shaders/texture.frag",
+            .vertex_path = "../Game/Shaders/texture.vert",
+            .fragment_path = "../Game/Shaders/texture.frag",
     });
+    textureShader.setUniformName("model", "model");
+    textureShader.setUniformName("tint", "tint");
 
     Shader fontShader((ShaderArgs){
             .vertex_path = "../Game/Shaders/font.vert",
             .fragment_path = "../Game/Shaders/font.frag",
     });
+    fontShader.setUniformName("textColour", "textColor");
+
+    Shader shapeShader((ShaderArgs){
+        .vertex_path = "../Game/Shaders/shape.vert",
+        .fragment_path = "../Game/Shaders/shape.frag"
+    });
 
     glm::vec2 position = glm::vec2(400, 300);
     glm::vec2 scale = glm::vec2(1, 1);
 
-    Player player(position, scale);
+    Player player;
 
     Camera2D cam(textureShader, screenWidth, screenHeight);
     cam.setPosition({0, 0});
@@ -59,12 +68,13 @@ int main() {
 
     Font font("../Game/Resources/Roboto-Regular.ttf");
 
+    Shape shape(ShapeType::OutlineRectangle);
+
     while (window.windowOpen()) {
+        ImGui_ImplSDL3_ProcessEvent(&window.event);
         if (window.kb->isDown(SDLK_ESCAPE)) {
             window.open = false;
         }
-
-        ImGui_ImplSDL3_ProcessEvent(&window.event);
 
         player.update(window.kb, window.deltaTime);
         cam.setPosition(player.position);
@@ -82,8 +92,9 @@ int main() {
             ImGui::SetWindowPos({5, 5});
 
             ImGui::Text("Player Animation Index: %d", player.currentAnimation->currentIndex);
+            ImGui::Text("Player Position: (%d, %d)", (int)player.position.x, (int)player.position.y);
 
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 0.5));
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 0.4));
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             ImGui::PopStyleColor();
             ImGui::End();
@@ -94,6 +105,15 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        shape.draw((ShapeDrawArgs){
+            .position = {400, 300},
+            .dimensions = {100, 100},
+            .tint = {1, 1, 1, 1},
+            .pixelSize = 0.05f,
+            .screenWidth = screenWidth, .screenHeight = screenHeight,
+            .shapeShader = shapeShader
+        });
+
         cam.attach();
 
         player.render(textureShader);
@@ -102,8 +122,6 @@ int main() {
 
         fontShader.use();
         fontShader.set_mat4("projection", fontProjection);
-
-//        std::string index = "Current Animation Index: " + std::to_string(player.currentAnimation->currentIndex);
 
         font.print((FontPrintArgs){
             .text = "Sigma Game",
@@ -114,8 +132,10 @@ int main() {
         });
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         window.refresh();
     }
+
 
     return 0;
 }
