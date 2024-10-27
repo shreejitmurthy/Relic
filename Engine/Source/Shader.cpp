@@ -121,3 +121,24 @@ void Shader::set_vec4(const char *name, glm::vec4 vec) {
     glUniform4f(glGetUniformLocation(ID, name), vec.x, vec.y, vec.z, vec.w);
 }
 
+void Shader::setUniformName(const std::string& uniformType, const std::string& name) {
+    // This sucks cheeks.
+    if (uniformType == "model") {
+        uniforms.model = name;
+    } else if (uniformType == "tint") {
+        uniforms.tint = name;
+    } else if (uniformType == "textColour") {
+        uniforms.textColour = name;
+    } else if (uniformType == "shapePos") {
+        uniforms.shapePos = name;
+    } else if (uniformType == "shapeScale") {
+        uniforms.shapeScale = name;
+    } else if (uniformType == "shapeSizePixel") {
+        uniforms.shapeSizePixel = name;
+    } else if (uniformType == "shapeDrawColour") {
+        uniforms.shapeDrawColour = name;
+    } else if (uniformType == "shapeType") {
+        uniforms.shapeType = name;
+    }
+}
+
