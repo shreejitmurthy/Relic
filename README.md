@@ -5,7 +5,7 @@
 - [X] **ENG**: Dear ImGui Support
 - [X] **GAME**: Spritesheet animation 
 - [ ] **ENG**: Shape renderer
-- [ ] **ENG**: Better shape transformations (scaling, rotating)
+- [ ] **ENG**: Better shape transformations (scaling, rotating, affected by camera projection)
 - [ ] **ENG**: Some form of scene renderer
 - [ ] **GAME**: Draw basic scene
 - [ ] **ENG**: Physics engine (simple wrapper over commercial engine)
