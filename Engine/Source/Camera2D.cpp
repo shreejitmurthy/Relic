@@ -48,7 +48,3 @@ void Camera2D::detach() {
     _shader->set_mat4("view", glm::mat4(1.f));
     _shader->set_mat4("projection", glm::ortho(0.f, static_cast<float>(_width), static_cast<float>(_height), 0.f, -1.f, 1.f));
 }
-
-
-
-
