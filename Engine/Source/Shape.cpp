@@ -5,7 +5,6 @@
 #include "Shape.hpp"
 
 #include <glad/glad.h>
-#include <SDL3/SDL.h>
 
 Shape::Shape(ShapeType shapeType) {
     _type = shapeType;
