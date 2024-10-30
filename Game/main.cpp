@@ -35,15 +35,15 @@ int main() {
     ImGui::StyleColorsDark();
 
     Shader textureShader((ShaderArgs){
-            .vertex_path = "../Game/Shaders/texture.vert",
-            .fragment_path = "../Game/Shaders/texture.frag",
+        .vertex_path = "../Game/Shaders/texture.vert",
+        .fragment_path = "../Game/Shaders/texture.frag",
     });
     textureShader.setUniformName("model", "model");
     textureShader.setUniformName("tint", "tint");
 
     Shader fontShader((ShaderArgs){
-            .vertex_path = "../Game/Shaders/font.vert",
-            .fragment_path = "../Game/Shaders/font.frag",
+        .vertex_path = "../Game/Shaders/font.vert",
+        .fragment_path = "../Game/Shaders/font.frag",
     });
     fontShader.setUniformName("textColour", "textColor");
 
@@ -92,6 +92,7 @@ int main() {
             ImGui::SetWindowPos({5, 5});
 
             ImGui::Text("Player Animation Index: %d", player.currentAnimation->currentIndex);
+            ImGui::Text("Player Animation Completed: %d", player.currentAnimation->completed);
             ImGui::Text("Player Position: (%d, %d)", (int)player.position.x, (int)player.position.y);
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 0.4));
@@ -106,10 +107,10 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shape.draw((ShapeDrawArgs){
-            .position = {400, 300},
-            .dimensions = {100, 100},
+            .position = player.position,
+            .dimensions = {player.currentAnimation->frames.at(player.currentAnimation->currentIndex).w, player.currentAnimation->frames.at(player.currentAnimation->currentIndex).h},
             .tint = {1, 1, 1, 1},
-            .pixelSize = 0.05f,
+            .pixelSize = 0.1f,
             .screenWidth = screenWidth, .screenHeight = screenHeight,
             .shapeShader = shapeShader
         });
