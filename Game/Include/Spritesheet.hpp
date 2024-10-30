@@ -15,12 +15,14 @@
 
 class Animation {
 public:
-    Animation(std::vector<TextureQuad> frames, float delay);
+    Animation(std::vector<TextureQuad> frames, float delay, bool loop);
     void update(float dt);
     std::vector<TextureQuad> frames;
     float delay;
     float currentTime;
     int currentIndex;
+    bool completed;
+    bool loop;
 };
 
 typedef struct {
@@ -33,7 +35,7 @@ typedef struct {
 class Spritesheet {
 public:
     Spritesheet(std::string path, int frameWidth, int frameHeight);
-    Animation newAnimation(const std::array<int, 2>& s, const std::array<int, 2>& f, float delay);
+    Animation newAnimation(const std::array<int, 2>& s, const std::array<int, 2>& f, float delay, bool loop = true);
     void draw(SpritesheetDrawArgs args);
 private:
     std::vector<TextureQuad> getFramesInRow(int sRow, int sCol, int fRow, int fCol) const;

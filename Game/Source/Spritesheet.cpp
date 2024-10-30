@@ -4,22 +4,46 @@
 
 #include "Spritesheet.hpp"
 
-Animation::Animation(std::vector<TextureQuad> frames, float delay) {
+Animation::Animation(std::vector<TextureQuad> frames, float delay, bool loop) {
     this->frames = frames;
     this->delay = delay;
+    this->loop = loop;
+    completed = false;
     currentTime = 0;
-    currentIndex = 1;
+    currentIndex = 0;
 }
 
+/**
+ * Update the animation by updating the index based on set delay.
+ * @param dt: Difference in time between two frames.
+ */
 void Animation::update(float dt) {
+    if (!loop && currentIndex == frames.size() - 1) {
+        completed = true;
+        return;
+    }
+
     currentTime += dt;
 
     if (currentTime >= delay) {
         currentTime -= delay;
-        currentIndex = (currentIndex + 1) % frames.size();
+
+        if (loop) {
+            currentIndex = (currentIndex + 1) % frames.size();
+        } else {
+            if (currentIndex < frames.size() - 1) {
+                currentIndex++;
+            }
+        }
     }
 }
 
+/**
+ * Create a Spritesheet object.
+ * @param path: Image path of the spritesheet.
+ * @param frameWidth: Width of each frame in the sheet.
+ * @param frameHeight: Height of each frame in the sheet.
+ */
 Spritesheet::Spritesheet(std::string path, int frameWidth, int frameHeight) {
     texture = std::make_unique<Texture>(path);
     frameDimensions = {frameWidth, frameHeight};
@@ -38,14 +62,26 @@ std::vector<TextureQuad> Spritesheet::getFramesInRow(int sRow, int sCol, int fRo
     return f;
 }
 
-Animation Spritesheet::newAnimation(const std::array<int, 2>& s, const std::array<int, 2>& f, float delay) {
+/**
+ * Create a new animation.
+ * @param s: Coordinates of starting frame.
+ * @param f: Coordinates of ending frame.
+ * @param delay: Delay between each frame.
+ * @param loop: Default true. Whether the animation loops over itself, or stops at the last frame.
+ * @return Animation object.
+ */
+Animation Spritesheet::newAnimation(const std::array<int, 2>& s, const std::array<int, 2>& f, float delay, bool loop) {
     auto [sx, sy] = s;
     auto [fx, fy] = f;
     auto frames = getFramesInRow(sy, sx, fy, fx);
 
-    return Animation(frames, delay);
+    return Animation(frames, delay, loop);
 }
 
+/**
+ * Draw the spritesheet
+ * @param args: animation: Animation object to draw from Spritesheet; position: Location of the drawn Animation; tint: Default {1, 1, 1, 1}. Colour of the drawn Animation; shader: Shader to pass uniforms through.
+ */
 void Spritesheet::draw(SpritesheetDrawArgs args) {
     texture->draw((TextureDrawArgs){
         .position = args.position,
