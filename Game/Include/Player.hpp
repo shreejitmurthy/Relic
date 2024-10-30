@@ -10,9 +10,14 @@
 
 #include "Spritesheet.hpp"
 
-enum PLAYER_STATES {
+enum class STATE {
     IDLE,
     RUN,
+    JUMP,
+    FALL,
+    LAND,
+
+    WRAP,
 };
 
 class Player : Actor {
@@ -26,9 +31,9 @@ public:
     glm::vec2 position;
 
     std::shared_ptr<Spritesheet> sheet;
-    std::unordered_map<PLAYER_STATES, std::shared_ptr<Animation>> animations;
+    std::unordered_map<STATE, std::shared_ptr<Animation>> animations;
     std::shared_ptr<Animation> currentAnimation;
-    PLAYER_STATES state;
+    STATE state;
 private:
     glm::vec2 scale;
     float moveSpeed;
