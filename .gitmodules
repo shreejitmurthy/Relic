@@ -13,3 +13,9 @@
 [submodule "vendor/imgui"]
 	path = vendor/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "Vendor/box2cpp"]
+	path = Vendor/box2cpp
+	url = https://github.com/HolyBlackCat/box2cpp.git
+[submodule "Vendor/box2d"]
+	path = Vendor/box2d
+	url = https://github.com/erincatto/box2d.git
