@@ -17,15 +17,15 @@ STATE Previous(STATE dir) {
 }
 
 Player::Player() {
-    this->position = glm::vec2(400, 300);
+    this->position = glm::vec2(400, 324);
     this->scale = glm::vec2(1, 1);
     tint = {1, 1, 1, 1};
 
-    sheet = std::make_shared<Spritesheet>("../Game/Resources/V1/player_V1.png", 48, 48);
+    sheet = std::make_shared<Spritesheet>("Game/Resources/V1/player_V1.png", 48, 48);
     animations[STATE::IDLE] = std::make_shared<Animation>(sheet->newAnimation({1, 1}, {1, 10}, 0.1));
     animations[STATE::RUN] = std::make_shared<Animation>(sheet->newAnimation({2, 1}, {2, 8}, 0.07));
-    animations[STATE::JUMP] = std::make_shared<Animation>(sheet->newAnimation({3, 1}, {3, 3}, 0.15, false));
-    animations[STATE::FALL] = std::make_shared<Animation>(sheet->newAnimation({3, 3}, {3, 4}, 0.5));
+    animations[STATE::JUMP] = std::make_shared<Animation>(sheet->newAnimation({3, 1}, {3, 3}, 0.1, false));
+    animations[STATE::FALL] = std::make_shared<Animation>(sheet->newAnimation({3, 3}, {3, 4}, 0.5, false));
     animations[STATE::LAND] = std::make_shared<Animation>(sheet->newAnimation({4, 1}, {4, 9}, 0.1));
     state = STATE::IDLE;
     currentAnimation = animations[state];
@@ -46,10 +46,19 @@ void Player::update(Keyboard *kb, float deltaTime) {
 
     // NOTE: This is just temporary
     if (kb->isPressed(SDLK_L)) {
-        state = Next(state);
+        STATE nextState = Next(state);
+        if (animations[nextState]->completed) {
+            animations[nextState]->reset();
+        }
+        state = nextState;
     } else if (kb->isPressed(SDLK_J)) {
-        state = Previous(state);
+        STATE previousState = Previous(state);
+        if (animations[previousState]->completed) {
+            animations[previousState]->reset();
+        }
+        state = previousState;
     }
+
 
     currentAnimation = animations[state];
     currentAnimation->update(deltaTime);
