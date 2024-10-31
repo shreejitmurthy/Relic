@@ -38,10 +38,16 @@ void Player::update(Keyboard *kb, float deltaTime) {
         position.x += 1;
     }
 
+    if (kb->isDown(SDLK_UP)) {
+        position.y -= 1;
+    } else if (kb->isDown(SDLK_DOWN)) {
+        position.y += 1;
+    }
+
     // NOTE: This is just temporary
-    if (kb->isPressed(SDLK_RIGHT)) {
+    if (kb->isPressed(SDLK_L)) {
         state = Next(state);
-    } else if (kb->isPressed(SDLK_LEFT)) {
+    } else if (kb->isPressed(SDLK_J)) {
         state = Previous(state);
     }
 
