@@ -4,13 +4,13 @@
 
 #include "Spritesheet.hpp"
 
+#include <iostream>
+
 Animation::Animation(std::vector<TextureQuad> frames, float delay, bool loop) {
     this->frames = frames;
     this->delay = delay;
     this->loop = loop;
-    completed = false;
-    currentTime = 0;
-    currentIndex = 0;
+    reset();
 }
 
 /**
@@ -36,6 +36,12 @@ void Animation::update(float dt) {
             }
         }
     }
+}
+
+void Animation::reset() {
+    completed = false;
+    currentTime = 0;
+    currentIndex = 0;
 }
 
 /**
@@ -74,8 +80,13 @@ Animation Spritesheet::newAnimation(const std::array<int, 2>& s, const std::arra
     auto [sx, sy] = s;
     auto [fx, fy] = f;
     auto frames = getFramesInRow(sy, sx, fy, fx);
+    Animation animation(frames, delay, loop);
 
-    return Animation(frames, delay, loop);
+    for (int i = 0; i <= (fx - sx + fy - sy); ++i) {
+        animation.frameDelays[i] = delay;
+    }
+
+    return animation;
 }
 
 /**

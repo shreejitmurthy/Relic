@@ -4,11 +4,15 @@
 // Effectively a C++ and in-house engine port of https://github.com/shreejitmurthy/LOVE-spritesheets
 
 #pragma once
+
 #include <glm/glm.hpp>
+
 #include <memory>
 #include <string>
 #include <vector>
 #include <array>
+#include <unordered_map>
+
 #include "Font.hpp"
 #include "Texture.hpp"
 #include "Shader.hpp"
@@ -17,12 +21,14 @@ class Animation {
 public:
     Animation(std::vector<TextureQuad> frames, float delay, bool loop);
     void update(float dt);
+    void reset();
     std::vector<TextureQuad> frames;
     float delay;
     float currentTime;
     int currentIndex;
     bool completed;
     bool loop;
+    std::unordered_map<int, float> frameDelays;
 };
 
 typedef struct {
