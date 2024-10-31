@@ -1,11 +1,11 @@
-## Roadmap:
-- [X] **ENG**: Camera2D
-- [X] **ENG**: Text Rendering
-- [X] **GAME**: Actors (moving guys)
-- [X] **ENG**: Dear ImGui Support
-- [X] **GAME**: Spritesheet animation 
-- [X] **ENG**: Shape renderer
-- [ ] **ENG**: Physics implementation
-- [ ] **GAME**: Draw basic scene
-- [ ] **ENG**: Some form of scene renderer
-- [ ] **ENG**: Better shape transformations (scaling, rotating, affected by camera projection)
+# Relic
+
+## 2024-10-4
+![title](Screenshots/2024-10-04.png)
+## 2024-10-11
+![title](Screenshots/2024-10-11.png)
+## 2024-10-26
+![title](Screenshots/2024-10-26.png)
+## 2024-11-01
+![title](Screenshots/2024-11-01.png)
+
