@@ -34,39 +34,41 @@ int main() {
 
     ImGui::StyleColorsDark();
 
+    // Don't have to write '../' anymore!
     Shader textureShader((ShaderArgs){
-        .vertex_path = "../Game/Shaders/texture.vert",
-        .fragment_path = "../Game/Shaders/texture.frag",
+        .vertex_path = "Game/Shaders/texture.vert",
+        .fragment_path = "Game/Shaders/texture.frag"
     });
     textureShader.setUniformName("model", "model");
     textureShader.setUniformName("tint", "tint");
 
     Shader fontShader((ShaderArgs){
-        .vertex_path = "../Game/Shaders/font.vert",
-        .fragment_path = "../Game/Shaders/font.frag",
+        .vertex_path = "Game/Shaders/font.vert",
+        .fragment_path = "Game/Shaders/font.frag",
     });
     fontShader.setUniformName("textColour", "textColor");
 
     Shader shapeShader((ShaderArgs){
-        .vertex_path = "../Game/Shaders/shape.vert",
-        .fragment_path = "../Game/Shaders/shape.frag"
+        .vertex_path = "Game/Shaders/shape.vert",
+        .fragment_path = "Game/Shaders/shape.frag"
     });
 
     Shader gradientShader((ShaderArgs){
-            .vertex_path = "../Game/Shaders/gradient.vert",
-            .fragment_path = "../Game/Shaders/gradient.frag"
+        .vertex_path = "Game/Shaders/gradient.vert",
+        .fragment_path = "Game/Shaders/gradient.frag"
     });
+
+    Texture background("Game/Resources/background.png");
 
     // Define the vertices for the fullscreen quad
     float quadVertices[] = {
-            // Positions    // Texture Coordinates (optional)
             -1.0f,  1.0f,   // Top-left
             -1.0f, -1.0f,   // Bottom-left
-            1.0f, -1.0f,   // Bottom-right
+            1.0f, -1.0f,    // Bottom-right
 
             -1.0f,  1.0f,   // Top-left
-            1.0f, -1.0f,   // Bottom-right
-            1.0f,  1.0f    // Top-right
+            1.0f, -1.0f,    // Bottom-right
+            1.0f,  1.0f     // Top-right
     };
 
     // Set up VAO and VBO for the background gradient quad
@@ -97,7 +99,7 @@ int main() {
             0.f, static_cast<float>(screenHeight),
             -1.f, 1.f);
 
-    Font font("../Game/Resources/Roboto-Regular.ttf");
+    Font font("Game/Resources/Roboto-Regular.ttf");
 
     Shape shape(ShapeType::OutlineRectangle);
 
@@ -123,7 +125,7 @@ int main() {
             ImGui::SetWindowPos({5, 5});
 
             ImGui::Text("Player Animation Index: %d", player.currentAnimation->currentIndex);
-            ImGui::Text("Player Animation Completed: %d", player.currentAnimation->completed);
+            ImGui::Text("Player Animation Completed: %s", (player.currentAnimation->completed == 1) ? "true" : "false");
             ImGui::Text("Player Position: (%d, %d)", (int)player.position.x, (int)player.position.y);
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 0.4));
@@ -146,18 +148,23 @@ int main() {
 
         cam.attach();
 
+        background.draw((TextureDrawArgs){
+            .position = {400, 300},
+            .shader = textureShader
+        });
+
         player.render(textureShader);
 
         cam.detach();
 
-        shape.draw((ShapeDrawArgs){
-            .position = player.position,
-            .dimensions = {player.currentAnimation->frames.at(player.currentAnimation->currentIndex).w, player.currentAnimation->frames.at(player.currentAnimation->currentIndex).h},
-            .tint = {1, 1, 1, 1},
-            .pixelSize = 0.1f,
-            .screenWidth = screenWidth, .screenHeight = screenHeight,
-            .shapeShader = shapeShader
-        });
+//        shape.draw((ShapeDrawArgs){
+//            .position = player.position,
+//            .dimensions = {player.currentAnimation->frames.at(player.currentAnimation->currentIndex).w, player.currentAnimation->frames.at(player.currentAnimation->currentIndex).h},
+//            .tint = {1, 1, 1, 1},
+//            .pixelSize = 0.1f,
+//            .screenWidth = screenWidth, .screenHeight = screenHeight,
+//            .shapeShader = shapeShader
+//        });
 
         fontShader.use();
         fontShader.set_mat4("projection", fontProjection);
