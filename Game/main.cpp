@@ -52,6 +52,37 @@ int main() {
         .fragment_path = "../Game/Shaders/shape.frag"
     });
 
+    Shader gradientShader((ShaderArgs){
+            .vertex_path = "../Game/Shaders/gradient.vert",
+            .fragment_path = "../Game/Shaders/gradient.frag"
+    });
+
+    // Define the vertices for the fullscreen quad
+    float quadVertices[] = {
+            // Positions    // Texture Coordinates (optional)
+            -1.0f,  1.0f,   // Top-left
+            -1.0f, -1.0f,   // Bottom-left
+            1.0f, -1.0f,   // Bottom-right
+
+            -1.0f,  1.0f,   // Top-left
+            1.0f, -1.0f,   // Bottom-right
+            1.0f,  1.0f    // Top-right
+    };
+
+    // Set up VAO and VBO for the background gradient quad
+    unsigned int quadVAO, quadVBO;
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glBindVertexArray(0);
+
+    glm::vec3 topColor(0, 0.45f, 0.92f);
+    glm::vec3 bottomColor(0.76f, 0.49f, 0.59f);
+
     glm::vec2 position = glm::vec2(400, 300);
     glm::vec2 scale = glm::vec2(1, 1);
 
@@ -103,8 +134,21 @@ int main() {
 
         ImGui::Render();
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.f);
+//        glClearColor(0.2f, 0.3f, 0.3f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
+        gradientShader.use();
+        gradientShader.set_vec3("topColor", topColor);
+        gradientShader.set_vec3("bottomColor", bottomColor);
+
+        glBindVertexArray(quadVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+
+        cam.attach();
+
+        player.render(textureShader);
+
+        cam.detach();
 
         shape.draw((ShapeDrawArgs){
             .position = player.position,
@@ -114,12 +158,6 @@ int main() {
             .screenWidth = screenWidth, .screenHeight = screenHeight,
             .shapeShader = shapeShader
         });
-
-        cam.attach();
-
-        player.render(textureShader);
-
-        cam.detach();
 
         fontShader.use();
         fontShader.set_mat4("projection", fontProjection);
