@@ -5,14 +5,16 @@
 #include "Font.hpp"
 #include <iostream>
 #include <glad/glad.h>
-#include <glm/gtc/matrix_transform.hpp>
+
+#include "System.hpp"
 
 Font::Font(const char *path) {
+    std::string fontPath = System::findPathUpwards(path);
     if (FT_Init_FreeType(&FontState.ft)) {
         std::cerr << "Could not initialise FreeType" << std::endl;
     }
     FT_Face face;
-    if (FT_New_Face(FontState.ft, path, 0, &face)) {
+    if (FT_New_Face(FontState.ft, fontPath.c_str(), 0, &face)) {
         std::cerr << "Freetype failed to load font"  << std::endl;
     } else {
         FT_Set_Pixel_Sizes(face, 0, 48);

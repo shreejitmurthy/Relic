@@ -9,6 +9,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "System.hpp"
+
 Texture::Texture(std::string path) {
     glGenTextures(1, &_ID);
     glBindTexture(GL_TEXTURE_2D, _ID);
@@ -17,7 +19,9 @@ Texture::Texture(std::string path) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_nrChannels, 4);
+    std::string texturePath = System::findPathUpwards(path);
+
+    unsigned char* data = stbi_load(texturePath.c_str(), &_width, &_height, &_nrChannels, 4);
     if (data) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -138,4 +142,3 @@ int Texture::getHeight() {
 Texture::~Texture() {
     glDeleteTextures(1, &_ID);
 }
-

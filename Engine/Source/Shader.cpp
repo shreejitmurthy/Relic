@@ -8,6 +8,8 @@
 #include <log/log.h>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "System.hpp"
+
 void Shader::checkCompileErrors(unsigned int shader, const char* type) {
     int success;
     char infoLog[1024];
@@ -72,8 +74,12 @@ char* Shader::readFile(const char* filePath) {
 
 
 Shader::Shader(ShaderArgs args) {
-    char* vertexCode = readFile(args.vertex_path.c_str());
-    char* fragmentCode = readFile(args.fragment_path.c_str());
+
+    std::string vertexPath = System::findPathUpwards(args.vertex_path);
+    std::string fragmentPath = System::findPathUpwards(args.fragment_path);
+
+    char* vertexCode = readFile(vertexPath.c_str());
+    char* fragmentCode = readFile(fragmentPath.c_str());
 
     // 2. compile Shaders
     unsigned int vertex, fragment;
