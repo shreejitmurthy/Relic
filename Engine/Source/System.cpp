@@ -3,6 +3,7 @@
 //
 
 #include "System.hpp"
+#include "log/log.h"
 
 fs::path System::findEnginePath(const fs::path &startDir) {
     fs::path dir = startDir;
@@ -13,7 +14,8 @@ fs::path System::findEnginePath(const fs::path &startDir) {
         }
 
         if (dir == dir.root_path()) {
-            throw std::runtime_error("Engine directory not found!");
+            log_error("Engine directory not found!");
+            exit(1);
         }
 
         // move up one level in the directory
@@ -31,7 +33,8 @@ fs::path System::findPathUpwards(const fs::path& targetPath, const fs::path& sta
         }
 
         if (dir == dir.root_path()) {
-            throw std::runtime_error("Target path not found in any parent directory!");
+            log_error("Target: %s not found", targetPath.c_str());
+            exit(1);
         }
 
         // move up one level
