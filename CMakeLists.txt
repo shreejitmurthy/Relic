@@ -20,6 +20,7 @@ set(ENGINE_SOURCES
         Engine/Source/Font.cpp
         Game/Source/Spritesheet.cpp
         Engine/Source/Shape.cpp
+        Engine/Source/System.cpp
 )
 
 set(GAME_SOURCES
