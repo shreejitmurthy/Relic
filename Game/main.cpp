@@ -58,8 +58,6 @@ int main() {
         .fragment_path = "Game/Shaders/gradient.frag"
     });
 
-    Texture background("Game/Resources/background.png");
-
     // Define the vertices for the fullscreen quad
     float quadVertices[] = {
             -1.0f,  1.0f,   // Top-left
@@ -110,6 +108,7 @@ int main() {
         }
 
         player.update(window.kb, window.deltaTime);
+
         cam.setPosition(player.position);
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -147,11 +146,6 @@ int main() {
         glBindVertexArray(0);
 
         cam.attach();
-
-        background.draw((TextureDrawArgs){
-            .position = {400, 300},
-            .shader = textureShader
-        });
 
         player.render(textureShader);
 
