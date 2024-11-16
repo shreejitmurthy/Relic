@@ -17,7 +17,7 @@ STATE Previous(STATE dir) {
 }
 
 Player::Player() {
-    this->position = glm::vec2(400, 324);
+    this->position = glm::vec2(400, 200);
     this->scale = glm::vec2(1, 1);
     tint = {1, 1, 1, 1};
 
@@ -26,7 +26,7 @@ Player::Player() {
     animations[STATE::RUN] = std::make_shared<Animation>(sheet->newAnimation({2, 1}, {2, 8}, 0.07));
     animations[STATE::JUMP] = std::make_shared<Animation>(sheet->newAnimation({3, 1}, {3, 3}, 0.1, false));
     animations[STATE::FALL] = std::make_shared<Animation>(sheet->newAnimation({3, 3}, {3, 4}, 0.5, false));
-    animations[STATE::LAND] = std::make_shared<Animation>(sheet->newAnimation({4, 1}, {4, 9}, 0.1));
+    animations[STATE::LAND] = std::make_shared<Animation>(sheet->newAnimation({4, 1}, {4, 9}, 0.07));
     state = STATE::IDLE;
     currentAnimation = animations[state];
 }
