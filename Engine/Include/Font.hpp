@@ -19,11 +19,6 @@ struct Character {
     unsigned int advance; // Offset to advance to next glyph
 };
 
-struct {
-    FT_Library ft;
-    std::map<char, Character> characters;
-} FontState;
-
 typedef struct {
     std::string text;
     glm::vec2 position;
@@ -42,4 +37,6 @@ private:
     float _s;
     glm::vec4 _colour;
     Character _characterData;
+    FT_Library ft;
+    std::map<char, Character> characters;
 };

@@ -10,11 +10,11 @@
 
 Font::Font(const char *path) {
     std::string fontPath = System::findPathUpwards(path);
-    if (FT_Init_FreeType(&FontState.ft)) {
+    if (FT_Init_FreeType(&ft)) {
         std::cerr << "Could not initialise FreeType" << std::endl;
     }
     FT_Face face;
-    if (FT_New_Face(FontState.ft, fontPath.c_str(), 0, &face)) {
+    if (FT_New_Face(ft, fontPath.c_str(), 0, &face)) {
         std::cerr << "Freetype failed to load font"  << std::endl;
     } else {
         FT_Set_Pixel_Sizes(face, 0, 48);
@@ -45,8 +45,8 @@ Font::Font(const char *path) {
             // set texture options
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             // now store character for later use
             _characterData = {
                     texture,
@@ -54,13 +54,13 @@ Font::Font(const char *path) {
                     glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
                     static_cast<unsigned int>(face->glyph->advance.x)
             };
-            FontState.characters.insert(std::pair<char, Character>(c, _characterData));
+            characters.insert(std::pair<char, Character>(c, _characterData));
         }
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     FT_Done_Face(face);
-    FT_Done_FreeType(FontState.ft);
+    FT_Done_FreeType(ft);
 
     glGenVertexArrays(1, &_VAO);
     glGenBuffers(1, &_VBO);
@@ -75,7 +75,7 @@ Font::Font(const char *path) {
 }
 
 Font::~Font() {
-
+    _characterData = {0};
 }
 
 void Font::print(FontPrintArgs args) {
@@ -86,7 +86,7 @@ void Font::print(FontPrintArgs args) {
 
     std::string::const_iterator c;
     for (c = args.text.begin(); c != args.text.end(); c++) {
-        Character ch = FontState.characters[*c];
+        Character ch = characters[*c];
 
         float xpos = args.position.x + ch.bearing.x * args.scale;
         float ypos = args.position.y - (ch.size.y - ch.bearing.y) * args.scale;
