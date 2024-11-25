@@ -3,8 +3,6 @@ project(Relic)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(Vendor)
-
 add_subdirectory(Vendor/SDL)
 add_subdirectory(Vendor/glm)
 add_subdirectory(Vendor/freetype)
@@ -41,10 +39,11 @@ set(DEP_SOURCES
 )
 
 include_directories(
+        Vendor
         ${CMAKE_CURRENT_SOURCE_DIR}/Game/Include
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Include
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Vendor/glad
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Vendor/glm
+        ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/glad
+        ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/glm
         ${IMGUI_DIR}
         ${IMGUI_DIR}/backend
 )
