@@ -1,0 +1,5 @@
+.DS_Store
+cmake-build-debug/
+build/
+Game/Resources/
+Game/Maps/
