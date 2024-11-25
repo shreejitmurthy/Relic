@@ -19,3 +19,6 @@
 [submodule "Vendor/box2d"]
 	path = Vendor/box2d
 	url = https://github.com/erincatto/box2d.git
+[submodule "Vendor/tmxlite"]
+	path = Vendor/tmxlite
+	url = https://github.com/fallahn/tmxlite.git
