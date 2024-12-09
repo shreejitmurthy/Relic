@@ -52,7 +52,7 @@ void Shape::draw(ShapeDrawArgs args) {
     glUniform2f(glGetUniformLocation(args.shapeShader.ID, "posUL"), _x, _y);
     glUniform2f(glGetUniformLocation(args.shapeShader.ID, "scaleWH"), _width, _height);
     glUniform1f(glGetUniformLocation(args.shapeShader.ID, "sizePixel"), args.pixelSize);
-    glUniform1i(glGetUniformLocation(args.shapeShader.ID, "shapeType"), static_cast<GLint>(_type));
+    glUniform1i(glGetUniformLocation(args.shapeShader.ID, "shapeType"), static_cast<GLint>(0));
     args.shapeShader.set_vec4("drawColor", args.tint);
 
     glBindVertexArray(_VAO);
