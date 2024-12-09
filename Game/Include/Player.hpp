@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Actor.hpp"
+#include "Renderer.hpp"
 #include <unordered_map>
 #include <memory>
 
@@ -26,7 +27,7 @@ public:
     ~Player() override = default;
 
     void update(Keyboard* kb, float deltaTime) override;
-    void render(Shader textureShader) override;
+    void render(Renderer& renderer) override;
 
     glm::vec2 position;
 
