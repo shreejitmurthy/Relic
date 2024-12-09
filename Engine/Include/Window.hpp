@@ -27,11 +27,11 @@ public:
     Keyboard* kb;
     bool open;
     SDL_Event event;
+    int width, height;
 
     float deltaTime;
 private:
     Uint32 _previousTime;
     Uint32 _currentTime;
-    int _width, _height;
     std::string _title;
 };

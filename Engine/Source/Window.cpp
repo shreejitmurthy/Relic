@@ -5,7 +5,7 @@
 #include "Window.hpp"
 #include <log/log.h>
 
-Window::Window(WindowArgs args) : _width(args.width), _height(args.height), _title(args.title) {
+Window::Window(WindowArgs args) : width(args.width), height(args.height), _title(args.title) {
     log_set_quiet(!args.log);
     kb = new Keyboard();
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
@@ -23,7 +23,7 @@ Window::Window(WindowArgs args) : _width(args.width), _height(args.height), _tit
 
     open = true;
 
-    window = SDL_CreateWindow(_title.c_str(), _width, _height, SDL_WINDOW_OPENGL);
+    window = SDL_CreateWindow(_title.c_str(), width, height, SDL_WINDOW_OPENGL);
     ctx = SDL_GL_CreateContext(window);
 
     if (gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress) == 0) {
@@ -34,7 +34,7 @@ Window::Window(WindowArgs args) : _width(args.width), _height(args.height), _tit
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glViewport(0, 0, _width, _height);
+    glViewport(0, 0, width, height);
 
     log_info("ENGINE::Created Window and Context");
 }
