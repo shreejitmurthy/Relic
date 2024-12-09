@@ -94,35 +94,34 @@ bool is_zero_colour(glm::vec4 colour) {
     return !(colour.x || colour.y || colour.z || colour.w);
 }
 
-void Texture::draw(TextureDrawArgs args) {
-    if (args.quad.w == 0.f) {
-        args.quad = (TextureQuad){0, 0, static_cast<float>(_width), static_cast<float>(_height)};
+void Texture::draw(glm::vec2 position, Shader shader, TextureQuad quad, glm::vec2 scale, float rotation, glm::vec4 tint) {
+    if (quad.w == 0.f) {
+        quad = (TextureQuad){0, 0, static_cast<float>(_width), static_cast<float>(_height)};
     }
-    _applyQuad(args.quad);
+    _applyQuad(quad);
     _updateVBO();
 
-    glm::vec2 position = glm::vec2(args.position.x, args.position.y);
     model = glm::mat4(1.0f);  // Identity matrix
 
     // Translation
     model = glm::translate(model, glm::vec3(position, 0.f));
 
     // Scaling
-    glm::vec3 finalScale = glm::vec3(args.scale.x == 0 ? 1.f : args.scale.x, args.scale.y == 0 ? 1.0f : args.scale.y, 1.0f);
+    glm::vec3 finalScale = glm::vec3(scale.x == 0 ? 1.f : scale.x, scale.y == 0 ? 1.0f : scale.y, 1.0f);
     model = glm::scale(model, finalScale);
 
     // Rotation
-    float rot = glm::radians(args.rotation);
+    float rot = glm::radians(rotation);
     model = glm::rotate(model, rot, glm::vec3(0.f, 0.f, 1.f));
 
     // Colour tinting
-    tint = is_zero_colour(args.tint)
+    tint = is_zero_colour(tint)
                      ? glm::vec4(1.f, 1.f, 1.f, 1.f)
-                     : glm::vec4(args.tint.r, args.tint.g, args.tint.b, args.tint.a);
+                     : glm::vec4(tint.r, tint.g, tint.b, tint.a);
 
-    args.shader.use();
-    args.shader.set_mat4(args.shader.uniforms.model.c_str(), model);  // Pass the transformation matrix
-    args.shader.set_vec4(args.shader.uniforms.tint.c_str(), tint);    // Pass the tint color
+    shader.use();
+    shader.set_mat4("model", model);  // Pass the transformation matrix
+    shader.set_vec4("tint", tint);    // Pass the tint color
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _ID);

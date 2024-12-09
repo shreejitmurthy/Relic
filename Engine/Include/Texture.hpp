@@ -14,19 +14,11 @@ typedef struct {
     float x, y, w, h;
 } TextureQuad;
 
-typedef struct {
-    glm::vec2 position;
-    TextureQuad quad;
-    glm::vec2 scale;
-    float rotation;
-    glm::vec4 tint;
-    Shader& shader;
-} TextureDrawArgs;
-
 class Texture {
 public:
     Texture(std::string path);
-    void draw(TextureDrawArgs args);
+    void draw(glm::vec2 position, Shader shader, TextureQuad quad, glm::vec2 scale, float rotation,glm::vec4 tint);
+
     ~Texture();
     int getWidth();
     int getHeight();
