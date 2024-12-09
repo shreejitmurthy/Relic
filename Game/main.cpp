@@ -11,14 +11,27 @@
 #include <imgui/backends/imgui_impl_sdl3.h>
 #include <imgui/backends/imgui_impl_opengl3.h>
 
+#include <tmxlite/Map.hpp>
+#include <tmxlite/Layer.hpp>
+#include <tmxlite/TileLayer.hpp>
+#include <tmxlite/ObjectGroup.hpp>
+
+//#define SOKOL_AUDIO_IMPL
+//#include <sokol_audio.h>
+
 const int screenWidth = 800, screenHeight = 600;
 
 int main() {
+    /* OpenGL init*/
     Window window((WindowArgs){
         .title = "Window",
         .width = screenWidth,
         .height = screenHeight,
+        .log = true
     });
+
+    Renderer renderer;
+    renderer.init(window);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -34,51 +47,48 @@ int main() {
 
     ImGui::StyleColorsDark();
 
-    // Don't have to write '../' anymore!
-    Shader textureShader((ShaderArgs){
-        .vertex_path = "Game/Shaders/texture.vert",
-        .fragment_path = "Game/Shaders/texture.frag"
-    });
-    textureShader.setUniformName("model", "model");
-    textureShader.setUniformName("tint", "tint");
-
-    Shader fontShader((ShaderArgs){
-        .vertex_path = "Game/Shaders/font.vert",
-        .fragment_path = "Game/Shaders/font.frag",
-    });
+    Shader fontShader;
+    fontShader.load("Engine/Shaders/font.vert", "Engine/Shaders/font.frag");
     fontShader.setUniformName("textColour", "textColor");
 
-    Shader shapeShader((ShaderArgs){
-        .vertex_path = "Game/Shaders/shape.vert",
-        .fragment_path = "Game/Shaders/shape.frag"
-    });
+    Shader shapeShader;
+    shapeShader.load("Engine/Shaders/shape.vert", "Engine/Shaders/shape.frag");
 
-    Shader gradientShader((ShaderArgs){
-        .vertex_path = "Game/Shaders/gradient.vert",
-        .fragment_path = "Game/Shaders/gradient.frag"
-    });
+    Shader bgShader;
+    bgShader.load("Game/Shaders/gradient.vert", "Game/Shaders/gradient.frag");
 
-    // Define the vertices for the fullscreen quad
-    float quadVertices[] = {
-            -1.0f,  1.0f,   // Top-left
-            -1.0f, -1.0f,   // Bottom-left
-            1.0f, -1.0f,    // Bottom-right
+    float bgVertices[] = {
+            -1.0f,  1.0f,
+            -1.0f, -1.0f,
+            1.0f, -1.0f,
 
-            -1.0f,  1.0f,   // Top-left
-            1.0f, -1.0f,    // Bottom-right
-            1.0f,  1.0f     // Top-right
+            -1.0f,  1.0f,
+            1.0f, -1.0f,
+            1.0f,  1.0f
     };
 
     // Set up VAO and VBO for the background gradient quad
-    unsigned int quadVAO, quadVBO;
-    glGenVertexArrays(1, &quadVAO);
-    glGenBuffers(1, &quadVBO);
-    glBindVertexArray(quadVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+    unsigned int bgVAO, bgVBO;
+    glGenVertexArrays(1, &bgVAO);
+    glGenBuffers(1, &bgVBO);
+    glBindVertexArray(bgVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, bgVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(bgVertices), &bgVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glBindVertexArray(0);
+
+    // tmx::Map map;
+    // map.load("../Game/Maps/basic.tmx");
+    // const auto& layers = map.getLayers();
+    // const auto& tiles = layers[0]->getLayerAs<tmx::TileLayer>().getTiles();
+
+    // printf("Chunks Count=%d\n", (int)tiles.size());
+    // for(int i=0; i<tiles.size(); i++) {
+    //     printf("tile id=%d\n", (int)tiles[i].ID);
+    // }
+
+    /* Game init */
 
     glm::vec3 topColor(0, 0.45f, 0.92f);
     glm::vec3 bottomColor(0.76f, 0.49f, 0.59f);
@@ -88,7 +98,9 @@ int main() {
 
     Player player;
 
-    Camera2D cam(textureShader, screenWidth, screenHeight);
+    Texture knight("Game/Resources/cool_guy.png");
+
+    Camera2D cam(screenWidth, screenHeight);
     cam.setPosition({0, 0});
     cam.setZoom(2);
 
@@ -97,9 +109,8 @@ int main() {
             0.f, static_cast<float>(screenHeight),
             -1.f, 1.f);
 
-    Font font("Game/Resources/Roboto-Regular.ttf");
-
-    Shape shape(ShapeType::OutlineRectangle);
+    Font versionFont("Game/Resources/Roboto-Regular.ttf");
+    Font font("Game/Resources/DungeonFont.ttf");
 
     while (window.windowOpen()) {
         ImGui_ImplSDL3_ProcessEvent(&window.event);
@@ -110,6 +121,8 @@ int main() {
         player.update(window.kb, window.deltaTime);
 
         cam.setPosition(player.position);
+
+        /* GUI Layer */
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL3_NewFrame();
@@ -135,35 +148,30 @@ int main() {
 
         ImGui::Render();
 
-//        glClearColor(0.2f, 0.3f, 0.3f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
-        gradientShader.use();
-        gradientShader.set_vec3("topColor", topColor);
-        gradientShader.set_vec3("bottomColor", bottomColor);
+        bgShader.use();
+        bgShader.set_vec3("topColor", topColor);
+        bgShader.set_vec3("bottomColor", bottomColor);
 
-        glBindVertexArray(quadVAO);
+        glBindVertexArray(bgVAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
 
-        cam.attach();
+        /* World Layer */
 
-        player.render(textureShader);
+        renderer.beginScene(cam);
 
-        cam.detach();
+        renderer.renderTexture(knight, {450, 250});
+        player.render(renderer);
 
-//        shape.draw((ShapeDrawArgs){
-//            .position = player.position,
-//            .dimensions = {player.currentAnimation->frames.at(player.currentAnimation->currentIndex).w, player.currentAnimation->frames.at(player.currentAnimation->currentIndex).h},
-//            .tint = {1, 1, 1, 1},
-//            .pixelSize = 0.1f,
-//            .screenWidth = screenWidth, .screenHeight = screenHeight,
-//            .shapeShader = shapeShader
-//        });
+        renderer.endScene();
+        
+        /* Surface Layer */
 
         fontShader.use();
         fontShader.set_mat4("projection", fontProjection);
 
-        font.print((FontPrintArgs){
+        versionFont.print((FontPrintArgs){
             .text = "Sigma Game",
             .position = {10, 10},
             .colour = {1, 1, 1, 0.2},
@@ -171,11 +179,18 @@ int main() {
             .shader = fontShader,
         });
 
+        font.print((FontPrintArgs){
+            .text = "cool font + physics!",
+            .position = {300, 300},
+            .colour = {1, 1, 1, 1},
+            .scale = 1,
+            .shader = fontShader
+        });
+
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         window.refresh();
     }
-
 
     return 0;
 }
