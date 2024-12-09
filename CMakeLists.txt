@@ -1,3 +1,14 @@
+#[===[
+
+cd build
+cmake ..
+cmake --build . --target Relic
+./Relic
+
+cmake --build . --target Relic && ./Relic
+
+]===]
+
 cmake_minimum_required(VERSION 3.28)
 project(Relic)
 
@@ -6,6 +17,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(Vendor/SDL)
 add_subdirectory(Vendor/glm)
 add_subdirectory(Vendor/freetype)
+add_subdirectory(Vendor/tmxlite/tmxlite)
 
 set(IMGUI_DIR "Vendor/imgui")
 
@@ -19,6 +31,7 @@ set(ENGINE_SOURCES
         Game/Source/Spritesheet.cpp
         Engine/Source/Shape.cpp
         Engine/Source/System.cpp
+        Engine/Source/Renderer.cpp
 )
 
 set(GAME_SOURCES
@@ -39,11 +52,12 @@ set(DEP_SOURCES
 )
 
 include_directories(
-        Vendor
+        ${CMAKE_CURRENT_SOURCE_DIR}/Vendor
         ${CMAKE_CURRENT_SOURCE_DIR}/Game/Include
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Include
         ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/glad
         ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/glm
+        ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/tmxlite/tmxlite/include
         ${IMGUI_DIR}
         ${IMGUI_DIR}/backend
 )
@@ -57,6 +71,7 @@ target_link_libraries(Relic
         glm::glm
         SDL3::SDL3
         freetype
+        tmxlite
 )
 
 # Define compile-time definitions (for the logger)
