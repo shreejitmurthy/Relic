@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "Shader.hpp"
+#include "Renderer.hpp"
 #include "Keyboard.hpp"
 #include "Texture.hpp"
 
@@ -13,5 +13,5 @@ public:
     virtual ~Actor() {}
     virtual void update(Keyboard* kb, float deltaTime) = 0;
     // Render method, also meant to be overridden
-    virtual void render(Shader shader) = 0;
+    virtual void render(Renderer& renderer) = 0;
 };

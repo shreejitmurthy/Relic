@@ -93,10 +93,6 @@ Animation Spritesheet::newAnimation(const std::array<int, 2>& s, const std::arra
  * Draw the spritesheet
  * @param args: animation: Animation object to draw from Spritesheet; position: Location of the drawn Animation; tint: Default {1, 1, 1, 1}. Colour of the drawn Animation; shader: Shader to pass uniforms through.
  */
-void Spritesheet::draw(SpritesheetDrawArgs args) {
-    texture->draw((TextureDrawArgs){
-        .position = args.position,
-        .quad = args.animation.frames.at(args.animation.currentIndex),
-        .shader = args.shader,
-    });
+void Spritesheet::draw(Renderer& renderer, Animation animation, glm::vec2 position, glm::vec4 tint) {
+    renderer.renderTexture(*texture, position, animation.frames.at(animation.currentIndex));
 }

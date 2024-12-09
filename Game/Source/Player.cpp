@@ -64,11 +64,6 @@ void Player::update(Keyboard *kb, float deltaTime) {
     currentAnimation->update(deltaTime);
 }
 
-void Player::render(Shader textureShader) {
-    sheet->draw((SpritesheetDrawArgs){
-        .animation = *currentAnimation,
-        .position = position,
-        .tint = tint,
-        .shader = textureShader
-    });
+void Player::render(Renderer& renderer) {
+    sheet->draw(renderer, *currentAnimation, position, tint);
 }

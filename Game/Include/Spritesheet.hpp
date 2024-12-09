@@ -16,6 +16,7 @@
 #include "Font.hpp"
 #include "Texture.hpp"
 #include "Shader.hpp"
+#include "Renderer.hpp"
 
 class Animation {
 public:
@@ -42,7 +43,7 @@ class Spritesheet {
 public:
     Spritesheet(std::string path, int frameWidth, int frameHeight);
     Animation newAnimation(const std::array<int, 2>& s, const std::array<int, 2>& f, float delay, bool loop = true);
-    void draw(SpritesheetDrawArgs args);
+    void draw(Renderer& renderer, Animation animation, glm::vec2 position, glm::vec4 tint = {1.f, 1.f, 1.f, 1.f});
 private:
     std::vector<TextureQuad> getFramesInRow(int sRow, int sCol, int fRow, int fCol) const;
     std::unique_ptr<Texture> texture;
