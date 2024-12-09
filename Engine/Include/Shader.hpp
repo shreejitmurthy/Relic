@@ -9,6 +9,7 @@
 #include <unordered_map>
 
 
+// TODO: Remove this nonsense
 // Settable names for the shader uniforms used by Texture, Font and Shape
 typedef struct {
     std::string model;
@@ -21,14 +22,9 @@ typedef struct {
     std::string shapeType;
 } ShaderUniforms;
 
-typedef struct {
-    std::string vertex_path;
-    std::string fragment_path;
-} ShaderArgs;
-
 class Shader {
 public:
-    Shader(ShaderArgs args);
+    void load(const char* vertex_path, const char* fragment_path);
     void use();
     void set_mat4(const char* name, glm::mat4 mat);
     void set_vec3(const char* name, glm::vec3 vec);

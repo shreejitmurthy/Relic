@@ -72,11 +72,9 @@ char* Shader::readFile(const char* filePath) {
     }
 }
 
-
-Shader::Shader(ShaderArgs args) {
-
-    std::string vertexPath = System::findPathUpwards(args.vertex_path);
-    std::string fragmentPath = System::findPathUpwards(args.fragment_path);
+void Shader::load(const char* vertex_path, const char* fragment_path) {
+    std::string vertexPath = System::findPathUpwards(vertex_path);
+    std::string fragmentPath = System::findPathUpwards(fragment_path);
 
     char* vertexCode = readFile(vertexPath.c_str());
     char* fragmentCode = readFile(fragmentPath.c_str());
