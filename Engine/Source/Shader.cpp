@@ -33,14 +33,14 @@ char* Shader::readFile(const char* filePath) {
         // Open the file
         SDL_IOStream* io = SDL_IOFromFile(filePath, "rb");
         if (io == nullptr) {
-            log_error("FILE_IO::File unsuccessfully read: %s", filePath);
+            log_error("SHADER_FILE_IO::File unsuccessfully read: %s", filePath);
             return nullptr;
         }
 
         // Get the length of the file
         Sint64 length = SDL_GetIOSize(io);
         if (length < 0) {
-            log_error("FILE_IO::SDL_IOStream file size error");
+            log_error("SHADER_FILE_IO::SDL_IOStream file size error");
             SDL_CloseIO(io);
             return nullptr;
         }
@@ -48,7 +48,7 @@ char* Shader::readFile(const char* filePath) {
         // Allocate memory to read the file content
         char* content = (char*)malloc(length + 1);
         if (content == nullptr) {
-            log_error("FILE_IO::File memory allocation failed");
+            log_error("SHADER_FILE_IO::File memory allocation failed");
             SDL_CloseIO(io);
             return nullptr;
         }
@@ -56,7 +56,7 @@ char* Shader::readFile(const char* filePath) {
         // Read the file content
         Sint64 bytesRead = SDL_ReadIO(io, content, length);
         if (bytesRead != length) {
-            log_error("FILE_IO::SDL_IOStream file read error");
+            log_error("SHADER_FILE_IO::SDL_IOStream file read error");
             free(content);
             SDL_CloseIO(io);
             return nullptr;
