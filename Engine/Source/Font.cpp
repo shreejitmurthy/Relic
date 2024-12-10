@@ -78,21 +78,21 @@ Font::~Font() {
     _characterData = {0};
 }
 
-void Font::print(FontPrintArgs args) {
-    args.shader.set_vec4(args.shader.uniforms.textColour.c_str(), args.colour);
+void Font::print(std::string text, glm::vec2 position, Shader shader, glm::vec4 colour, float scale) {
+    shader.set_vec4("textColor", colour);
 
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(_VAO);
 
     std::string::const_iterator c;
-    for (c = args.text.begin(); c != args.text.end(); c++) {
+    for (c = text.begin(); c != text.end(); c++) {
         Character ch = characters[*c];
 
-        float xpos = args.position.x + ch.bearing.x * args.scale;
-        float ypos = args.position.y - (ch.size.y - ch.bearing.y) * args.scale;
+        float xpos = position.x + ch.bearing.x * scale;
+        float ypos = position.y - (ch.size.y - ch.bearing.y) * scale;
 
-        float w = ch.size.x * args.scale;
-        float h = ch.size.y * args.scale;
+        float w = ch.size.x * scale;
+        float h = ch.size.y * scale;
         // update VBO for each character
         float vertices[6][4] = {
                 { xpos,     ypos + h,   0.0f, 0.0f },
@@ -107,13 +107,14 @@ void Font::print(FontPrintArgs args) {
         glBindTexture(GL_TEXTURE_2D, ch.ID);
         // update content of VBO memory
         glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        args.position.x += (ch.advance >> 6) * args.scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        position.x += (ch.advance >> 6) * scale;
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);

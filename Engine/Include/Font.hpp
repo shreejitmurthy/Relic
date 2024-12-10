@@ -19,19 +19,11 @@ struct Character {
     unsigned int advance;  // Offset to advance to next glyph
 };
 
-typedef struct {
-    std::string text;
-    glm::vec2 position;
-    glm::vec4 colour;
-    float scale;
-    Shader shader;
-} FontPrintArgs;
-
 class Font {
 public:
     Font(const char* path);
     ~Font();
-    void print(FontPrintArgs args);
+    void print(std::string text, glm::vec2 position, Shader shader, glm::vec4 colour, float scale);
 private:
     unsigned int _VAO, _VBO;
     float _s;
