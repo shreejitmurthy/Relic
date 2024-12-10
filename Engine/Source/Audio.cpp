@@ -3,12 +3,15 @@
 //
 
 #include "Audio.hpp"
+
 #include <log/log.h>
 #include <SDL3/SDL_iostream.h>
 #include <SDL3/SDL.h>
 
 #define SOKOL_AUDIO_IMPL
 #include "sokol_audio.h"
+
+#include "System.hpp"
 
 Sound::Sound(AudioData data, int channels)
     : data(data), channels(channels) {}
@@ -32,18 +35,36 @@ void stream_callback(float* buffer, int num_frames, int num_channels, void* user
         if (audio_data->position < audio_data->length) {
             buffer[i] = audio_data->buffer[audio_data->position++];
         } else {
-            buffer[i] = 0.0f; // Silence if no more data
+            buffer[i] = 0.0f;  // Silence if no more data
         }
     }
 }
 
-void Sound::play() {
-    data.paused = false;
+void Sound::setup() {
     saudio_setup((saudio_desc){
         .stream_userdata_cb = stream_callback,
         .user_data = &data,
         .num_channels = channels,
     });
+}
+
+void Sound::pause() {
+    data.paused = true;
+}
+
+void Sound::play() {
+    data.paused = false;
+}
+
+void Sound::stop() {
+    data.position = 0;
+    data.paused = true;
+}
+
+void Sound::setPlaybackPosition(size_t frame) {
+    if (frame < data.length) {
+        data.position = frame;
+    }
 }
 
 float pcm16_to_float(int16_t sample) {
@@ -62,7 +83,7 @@ Sound AudioManager::load(const char* filePath, AudioChannel channel) {
     if (filePath == nullptr) {
         log_error("AUDIO::Null file path");
     }
-    SDL_IOStream* io = SDL_IOFromFile(filePath, "rb");
+    SDL_IOStream* io = SDL_IOFromFile(System::findPathUpwards(filePath).c_str(), "rb");
     if (io == nullptr) {
         log_error("AUDIO_FILE_IO::File unsuccessfully read: %s", filePath);
     }
