@@ -32,6 +32,7 @@ set(ENGINE_SOURCES
         Engine/Source/Shape.cpp
         Engine/Source/System.cpp
         Engine/Source/Renderer.cpp
+        Engine/Source/Audio.cpp
 )
 
 set(GAME_SOURCES
