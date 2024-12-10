@@ -101,7 +101,6 @@ int main() {
     Texture knight("Game/Resources/cool_guy.png");
 
     Camera2D cam(screenWidth, screenHeight);
-    cam.setPosition({0, 0});
     cam.setZoom(2);
 
     glm::mat4 fontProjection = glm::ortho(
@@ -168,24 +167,9 @@ int main() {
         
         /* Surface Layer */
 
-        fontShader.use();
-        fontShader.set_mat4("projection", fontProjection);
-
-        versionFont.print((FontPrintArgs){
-            .text = "Sigma Game",
-            .position = {10, 10},
-            .colour = {1, 1, 1, 0.2},
-            .scale = 0.5,
-            .shader = fontShader,
-        });
-
-        font.print((FontPrintArgs){
-            .text = "cool font + physics!",
-            .position = {300, 300},
-            .colour = {1, 1, 1, 1},
-            .scale = 1,
-            .shader = fontShader
-        });
+        renderer.renderFont(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
+        
+        renderer.renderFont(font, "cool font", {300, 300});
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
