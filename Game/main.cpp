@@ -4,6 +4,7 @@
 #include "Math.hpp"
 #include "Camera2D.hpp"
 #include "Shape.hpp"
+#include "Audio.hpp"
 
 #include "Player.hpp"
 
@@ -26,6 +27,10 @@ int main() {
         .height = screenHeight,
         .log = true
     });
+
+    AudioManager am;
+    auto sound = am.load("/Users/shree/dev/cpp/Relic/Game/Resources/field_theme_1.wav", AudioChannel::Mono);
+    sound.play();
 
     Renderer renderer;
     renderer.init(window);
@@ -114,6 +119,7 @@ int main() {
             window.open = false;
         }
 
+
         player.update(window.kb, window.deltaTime);
 
         cam.setPosition(player.position);
@@ -172,6 +178,8 @@ int main() {
 
         window.refresh();
     }
+
+    // saudio_shutdown();
 
     return 0;
 }
