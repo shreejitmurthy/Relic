@@ -26,7 +26,7 @@ public:
             float rotation = 0.f,
             glm::vec4 tint = {0.f, 0.f, 0.f, 0.f});
 
-    void renderFont(Font& font, FontPrintArgs& args);
+    void renderFont(Font& font, std::string text, glm::vec2 position, glm::vec4 colour = glm::vec4(1.f), float scale = 1.f);
 private:
     Shader textureShader;
     Shader fontShader;

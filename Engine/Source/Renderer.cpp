@@ -31,13 +31,15 @@ void Renderer::beginScene(Camera2D& camera) {
 void Renderer::endScene() {
     textureShader.set_mat4("view", glm::mat4(1.f));
     textureShader.set_mat4("projection", glm::ortho(0.f, static_cast<float>(width), static_cast<float>(height), 0.f, -1.f, 1.f));
-    fontShader.set_mat4("projection", glm::ortho( 0.f, static_cast<float>(width), 0.f, static_cast<float>(height), -1.f, 1.f));
+    
+    fontShader.use();
+    fontShader.set_mat4("projection", glm::ortho(0.f, static_cast<float>(width), 0.f, static_cast<float>(height), -1.f, 1.f));
 }
 
 void Renderer::renderTexture(Texture& texture, glm::vec2 position, TextureQuad quad, glm::vec2 scale, float rotation, glm::vec4 tint) {
     texture.draw(position, textureShader, quad, scale, rotation, tint);
 }
 
-void Renderer::renderFont(Font& font, FontPrintArgs& args) {
-
+void Renderer::renderFont(Font& font, std::string text, glm::vec2 position, glm::vec4 colour, float scale) {
+    font.print(text, position, fontShader, colour, scale);
 }
