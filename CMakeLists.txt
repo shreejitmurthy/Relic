@@ -64,15 +64,30 @@ include_directories(
 
 find_package(OpenGL REQUIRED)
 
+set(RELIC_COMMON_LIBS
+    OpenGL::GL
+    glm::glm
+    SDL3::SDL3
+    freetype
+    tmxlite
+)
+
 add_executable(Relic ${ENGINE_SOURCES} ${GAME_SOURCES} ${DEP_SOURCES})
 
-target_link_libraries(Relic
-        OpenGL::GL
-        glm::glm
-        SDL3::SDL3
-        freetype
-        tmxlite
-)
+if(WIN32)
+    list(APPEND RELIC_COMMON_LIBS winmm) # WASAPI/DirectSound
+elseif(APPLE)
+    list(APPEND RELIC_COMMON_LIBS "-framework AudioToolbox")
+elseif(UNIX)
+    find_library(ALSA_LIB NAMES asound)
+    if(ALSA_LIB)
+        list(APPEND RELIC_COMMON_LIBS ${ALSA_LIB}) # ALSA for Linux
+    else()
+        message(FATAL_ERROR "ALSA library not found!")
+    endif()
+endif()
+
+target_link_libraries(Relic ${RELIC_COMMON_LIBS})
 
 # Define compile-time definitions (for the logger)
 target_compile_definitions(Relic PRIVATE LOG_USE_COLOR)
