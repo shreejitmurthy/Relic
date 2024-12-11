@@ -1,7 +1,7 @@
 //
 // Created by Shreejit Murthy on 11/12/2024.
 //
-// Use ONLY for background sound, sound effects and others should be handled 
+// Use only ONCE for background music, sound effects and others should be handled 
 // in another fashion.
 
 #include "Audio.hpp"
@@ -67,6 +67,7 @@ Audio::~Audio() {
     if (data.buffer) {
         free(data.buffer);
     }
+    saudio_shutdown();
 }
 
 void stream_callback(float* buffer, int num_frames, int num_channels, void* user_data) {
