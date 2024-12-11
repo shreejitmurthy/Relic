@@ -17,6 +17,8 @@
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
 
+#include "sokol_audio.h"
+
 #include <iostream>
 
 const int screenWidth = 800, screenHeight = 600;
@@ -30,9 +32,9 @@ int main() {
         .log = true
     });
 
-    AudioManager am;
-    Sound sound = am.load("Game/Resources/field_theme_1.wav", AudioChannel::Mono);
-    sound.setup();
+    Audio bgAudio;
+    bgAudio.load("Game/Resources/field_theme_1.wav", AudioChannel::Mono);
+    bgAudio.setup();
 
     Renderer renderer;
     renderer.init(window);
@@ -51,12 +53,8 @@ int main() {
 
     ImGui::StyleColorsDark();
 
-    Shader fontShader;
-    fontShader.load("Engine/Shaders/font.vert", "Engine/Shaders/font.frag");
-    fontShader.setUniformName("textColour", "textColor");
-
-    Shader shapeShader;
-    shapeShader.load("Engine/Shaders/shape.vert", "Engine/Shaders/shape.frag");
+    // Shader shapeShader;
+    // shapeShader.load("Engine/Shaders/shape.vert", "Engine/Shaders/shape.frag");
 
     Shader bgShader;
     bgShader.load("Game/Shaders/gradient.vert", "Game/Shaders/gradient.frag");
@@ -122,11 +120,11 @@ int main() {
         }
 
         if (window.kb->isPressed(SDLK_J)) {
-            sound.play();
+            bgAudio.play();
         } else if (window.kb->isPressed(SDLK_K)) {
-            sound.pause();
+            bgAudio.pause();
         } else if (window.kb->isPressed(SDLK_L)) {
-            sound.stop();
+            bgAudio.stop();
         }
 
         player.update(window.kb, window.deltaTime);
@@ -187,8 +185,6 @@ int main() {
 
         window.refresh();
     }
-
-    // saudio_shutdown();
 
     return 0;
 }
