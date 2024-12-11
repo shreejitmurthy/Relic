@@ -16,7 +16,8 @@ enum class AudioChannel {
 
 class Sound {
 public:
-    Sound(AudioData data, int channels);
+    Sound();
+    void load(const char* filePath, AudioChannel channel);
     ~Sound();
 
     void setup();
@@ -28,12 +29,4 @@ public:
 private:
     AudioData data;
     int channels;
-};
-
-// I have greater plans for this class, leave it be, for now.
-class AudioManager {
-public:
-    AudioManager();
-    ~AudioManager();
-    Sound load(const char* filePath, AudioChannel channel);
 };

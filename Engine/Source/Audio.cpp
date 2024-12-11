@@ -13,8 +13,53 @@
 
 #include "System.hpp"
 
-Sound::Sound(AudioData data, int channels)
-    : data(data), channels(channels) {}
+float pcm16_to_float(int16_t sample) {
+    return sample / 32768.0f;
+}
+
+Sound::Sound() {}
+
+void Sound::load(const char* filePath, AudioChannel channel) {
+    int channels = static_cast<int>(channel);
+    if (filePath == nullptr) {
+        log_error("AUDIO::Null file path");
+    }
+    SDL_IOStream* io = SDL_IOFromFile(System::findPathUpwards(filePath).c_str(), "rb");
+    if (io == nullptr) {
+        log_error("AUDIO_FILE_IO::File unsuccessfully read: %s", filePath);
+    }
+
+    SDL_AudioSpec spec;
+    uint8_t* raw_buffer;
+    uint32_t raw_length;
+    if (!SDL_LoadWAV_IO(io, false, &spec, &raw_buffer, &raw_length)) {
+        log_error("AUDIO_FILE_IO::Failed to load audio: %s", SDL_GetError());
+    }
+    SDL_CloseIO(io);
+
+    // Accept only S16 for now, further compatibility can be sorted later.
+    if (spec.format != SDL_AUDIO_S16) {
+        log_warn("AUDIO::Expected 16-bit PCM for now.");
+    }
+
+    size_t sample_count = raw_length / sizeof(int16_t);
+    data.buffer = (float*)malloc(sample_count * sizeof(float));
+    if (!data.buffer) {
+        log_error("AUDIO::Failed to allocate audio buffer memory");
+        free(raw_buffer);
+    }
+
+    int16_t* samples = (int16_t*)raw_buffer;
+    for (size_t i = 0; i < sample_count; ++i) {
+        data.buffer[i] = pcm16_to_float(samples[i]);
+    }
+
+    free(raw_buffer);
+
+    data.length = sample_count / spec.channels * channels;
+    data.position = 0;
+    data.paused = true;
+}
 
 Sound::~Sound() {
     if (data.buffer) {
@@ -65,63 +110,4 @@ void Sound::setPlaybackPosition(size_t frame) {
     if (frame < data.length) {
         data.position = frame;
     }
-}
-
-float pcm16_to_float(int16_t sample) {
-    return sample / 32768.0f;
-}
-
-AudioManager::AudioManager() {}
-
-AudioManager::~AudioManager() {
-    saudio_shutdown();
-}
-
-Sound AudioManager::load(const char* filePath, AudioChannel channel) {
-    int channels = static_cast<int>(channel);
-    float* buffer;
-    if (filePath == nullptr) {
-        log_error("AUDIO::Null file path");
-    }
-    SDL_IOStream* io = SDL_IOFromFile(System::findPathUpwards(filePath).c_str(), "rb");
-    if (io == nullptr) {
-        log_error("AUDIO_FILE_IO::File unsuccessfully read: %s", filePath);
-    }
-
-    SDL_AudioSpec spec;
-    uint8_t* raw_buffer;
-    uint32_t raw_length;
-    if (!SDL_LoadWAV_IO(io, false, &spec, &raw_buffer, &raw_length)) {
-        log_error("AUDIO_FILE_IO::Failed to load audio: %s", SDL_GetError());
-    }
-    SDL_CloseIO(io);
-
-    // Accept only S16 for now, further compatibility can be sorted later.
-    if (spec.format != SDL_AUDIO_S16) {
-        log_warn("AUDIO::Expected 16-bit PCM for now.");
-    }
-
-    size_t sample_count = raw_length / sizeof(int16_t);
-    buffer = (float*)malloc(sample_count * sizeof(float));
-    if (!buffer) {
-        log_error("AUDIO::Failed to allocate audio buffer memory");
-        free(raw_buffer);
-    }
-
-    int16_t* samples = (int16_t*)raw_buffer;
-    for (size_t i = 0; i < sample_count; ++i) {
-        buffer[i] = pcm16_to_float(samples[i]);
-    }
-
-    size_t length = sample_count / spec.channels * channels;
-    size_t position = 0;
-
-    free(raw_buffer);
-
-    return Sound((AudioData){
-        .buffer = buffer,
-        .length = length,
-        .position = position,
-        .paused = true,
-    }, channels);
 }
