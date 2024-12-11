@@ -31,7 +31,7 @@ int main() {
     });
 
     AudioManager am;
-    Sound sound = am.load("/Users/shree/dev/cpp/Relic/Game/Resources/field_theme_1.wav", AudioChannel::Mono);
+    Sound sound = am.load("Game/Resources/field_theme_1.wav", AudioChannel::Mono);
     sound.setup();
 
     Renderer renderer;
