@@ -31,7 +31,7 @@ int main() {
     });
 
     AudioManager am;
-    Sound sound = am.load("Game/Resources/field_theme_1.wav", AudioChannel::Mono);
+    Sound sound = am.load("/Users/shree/dev/cpp/Relic/Game/Resources/field_theme_1.wav", AudioChannel::Mono);
     sound.setup();
 
     Renderer renderer;
@@ -50,6 +50,13 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
 
     ImGui::StyleColorsDark();
+
+    Shader fontShader;
+    fontShader.load("Engine/Shaders/font.vert", "Engine/Shaders/font.frag");
+    fontShader.setUniformName("textColour", "textColor");
+
+    Shader shapeShader;
+    shapeShader.load("Engine/Shaders/shape.vert", "Engine/Shaders/shape.frag");
 
     Shader bgShader;
     bgShader.load("Game/Shaders/gradient.vert", "Game/Shaders/gradient.frag");
