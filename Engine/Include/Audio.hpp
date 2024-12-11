@@ -14,11 +14,11 @@ enum class AudioChannel {
     Stereo = 2
 };
 
-class Sound {
+class Audio {
 public:
-    Sound();
+    Audio();
     void load(const char* filePath, AudioChannel channel);
-    ~Sound();
+    ~Audio();
 
     void setup();
     void pause();

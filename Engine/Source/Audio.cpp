@@ -1,6 +1,8 @@
 //
 // Created by Shreejit Murthy on 11/12/2024.
 //
+// Use ONLY for background sound, sound effects and others should be handled 
+// in another fashion.
 
 #include "Audio.hpp"
 
@@ -17,9 +19,9 @@ float pcm16_to_float(int16_t sample) {
     return sample / 32768.0f;
 }
 
-Sound::Sound() {}
+Audio::Audio() {}
 
-void Sound::load(const char* filePath, AudioChannel channel) {
+void Audio::load(const char* filePath, AudioChannel channel) {
     int channels = static_cast<int>(channel);
     if (filePath == nullptr) {
         log_error("AUDIO::Null file path");
@@ -61,7 +63,7 @@ void Sound::load(const char* filePath, AudioChannel channel) {
     data.paused = true;
 }
 
-Sound::~Sound() {
+Audio::~Audio() {
     if (data.buffer) {
         free(data.buffer);
     }
@@ -85,7 +87,7 @@ void stream_callback(float* buffer, int num_frames, int num_channels, void* user
     }
 }
 
-void Sound::setup() {
+void Audio::setup() {
     saudio_setup((saudio_desc){
         .stream_userdata_cb = stream_callback,
         .user_data = &data,
@@ -93,20 +95,20 @@ void Sound::setup() {
     });
 }
 
-void Sound::pause() {
+void Audio::pause() {
     data.paused = true;
 }
 
-void Sound::play() {
+void Audio::play() {
     data.paused = false;
 }
 
-void Sound::stop() {
+void Audio::stop() {
     data.position = 0;
     data.paused = true;
 }
 
-void Sound::setPlaybackPosition(size_t frame) {
+void Audio::setPlaybackPosition(size_t frame) {
     if (frame < data.length) {
         data.position = frame;
     }
