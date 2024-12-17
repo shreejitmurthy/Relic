@@ -17,8 +17,6 @@
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
 
-#include "sokol_audio.h"
-
 #include <iostream>
 
 const int screenWidth = 800, screenHeight = 600;
@@ -45,16 +43,13 @@ int main() {
     io.IniFilename = nullptr;
 
     ImGuiWindowFlags im_window_flags = 0;
-    // im_window_flags |= ImGuiWindowFlags_NoResize;
-    // im_window_flags |= ImGuiWindowFlags_NoMove;
+    im_window_flags |= ImGuiWindowFlags_NoResize;
+    im_window_flags |= ImGuiWindowFlags_NoMove;
 
     ImGui_ImplSDL3_InitForOpenGL(window.window, window.ctx);
     ImGui_ImplOpenGL3_Init("#version 330");
 
     ImGui::StyleColorsDark();
-
-    // Shader shapeShader;
-    // shapeShader.load("Engine/Shaders/shape.vert", "Engine/Shaders/shape.frag");
 
     Shader bgShader;
     bgShader.load("Game/Shaders/gradient.vert", "Game/Shaders/gradient.frag");
@@ -178,7 +173,6 @@ int main() {
         /* Surface Layer */
 
         renderer.renderFont(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
-
         renderer.renderFont(font, "cool font", {300, 300});
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
