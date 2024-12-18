@@ -1,17 +1,17 @@
-[submodule "vendor/SDL"]
-	path = vendor/SDL
+[submodule "Vendor/SDL"]
+	path = Vendor/SDL
 	url = https://github.com/libsdl-org/SDL.git
-[submodule "vendor/glm"]
-	path = vendor/glm
+[submodule "Vendor/glm"]
+	path = Vendor/glm
 	url = https://github.com/g-truc/glm.git
-[submodule "vendor/log"]
-	path = vendor/log
+[submodule "Vendor/log"]
+	path = Vendor/log
 	url = https://github.com/shreejitmurthy/log.c.git
-[submodule "vendor/freetype"]
-	path = vendor/freetype
+[submodule "Vendor/freetype"]
+	path = Vendor/freetype
 	url = https://github.com/freetype/freetype.git
-[submodule "vendor/imgui"]
-	path = vendor/imgui
+[submodule "Vendor/imgui"]
+	path = Vendor/imgui
 	url = https://github.com/ocornut/imgui.git
 [submodule "Vendor/box2cpp"]
 	path = Vendor/box2cpp
