@@ -101,16 +101,10 @@ void Texture::draw(glm::vec2 position, Shader shader, TextureQuad quad, glm::vec
     _applyQuad(quad);
     _updateVBO();
 
-    model = glm::mat4(1.0f);  // Identity matrix
-
-    // Translation
+    model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(position, 0.f));
-
-    // Scaling
     glm::vec3 finalScale = glm::vec3(scale.x == 0 ? 1.f : scale.x, scale.y == 0 ? 1.0f : scale.y, 1.0f);
     model = glm::scale(model, finalScale);
-
-    // Rotation
     float rot = glm::radians(rotation);
     model = glm::rotate(model, rot, glm::vec3(0.f, 0.f, 1.f));
 
