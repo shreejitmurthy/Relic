@@ -9,16 +9,18 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <unordered_map>
+#include <string>
+
 class Renderer {
 public:
-    Renderer();
-    ~Renderer();
-
     void init(Window& window);
     void beginScene(Camera2D &camera);
     void endScene();
 
-    void renderTexture(
+    void load(const std::string& label, const std::string& path);
+
+    void render(
             Texture& texture, 
             glm::vec2 position,
             TextureQuad quad = {0.f, 0.f, 0.f, 0.f}, 
@@ -26,7 +28,8 @@ public:
             float rotation = 0.f,
             glm::vec4 tint = {0.f, 0.f, 0.f, 0.f});
 
-    void renderFont(Font& font, std::string text, glm::vec2 position, glm::vec4 colour = glm::vec4(1.f), float scale = 1.f);
+    void render(Font& font, std::string text, glm::vec2 position, glm::vec4 colour = glm::vec4(1.f), float scale = 1.f);;
+
 private:
     Shader textureShader;
     Shader fontShader;

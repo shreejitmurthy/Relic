@@ -5,15 +5,13 @@
 #include "Renderer.hpp"
 #include <glm/glm.hpp>
 
-Renderer::Renderer() {}
-Renderer::~Renderer() {}
+#include <log/log.h>
 
 void Renderer::init(Window& window) {
     textureShader.load("Engine/Shaders/texture.vert", "Engine/Shaders/texture.frag");
     fontShader.load("Engine/Shaders/font.vert", "Engine/Shaders/font.frag");
     width = window.width;
     height = window.height;
-
 }
 
 void Renderer::beginScene(Camera2D& camera) {
@@ -36,10 +34,15 @@ void Renderer::endScene() {
     fontShader.set_mat4("projection", glm::ortho(0.f, static_cast<float>(width), 0.f, static_cast<float>(height), -1.f, 1.f));
 }
 
-void Renderer::renderTexture(Texture& texture, glm::vec2 position, TextureQuad quad, glm::vec2 scale, float rotation, glm::vec4 tint) {
+template<typename First, typename ... T>
+bool is_in(First &&first, T && ... t) {
+    return ((first == t) || ...);
+}
+
+void Renderer::render(Texture& texture, glm::vec2 position, TextureQuad quad, glm::vec2 scale, float rotation, glm::vec4 tint) {
     texture.draw(position, textureShader, quad, scale, rotation, tint);
 }
 
-void Renderer::renderFont(Font& font, std::string text, glm::vec2 position, glm::vec4 colour, float scale) {
+void Renderer::render(Font& font, std::string text, glm::vec2 position, glm::vec4 colour, float scale) {
     font.print(text, position, fontShader, colour, scale);
 }
