@@ -8,7 +8,7 @@
 
 #include "System.hpp"
 
-Font::Font(const char *path) {
+Font::Font(const std::string& path) {
     std::string fontPath = System::findPathUpwards(path);
     if (FT_Init_FreeType(&ft)) {
         std::cerr << "Could not initialise FreeType" << std::endl;

@@ -21,7 +21,7 @@ struct Character {
 
 class Font {
 public:
-    Font(const char* path);
+    Font(const std::string& path);
     ~Font();
     void print(std::string text, glm::vec2 position, Shader shader, glm::vec4 colour, float scale);
 private:
