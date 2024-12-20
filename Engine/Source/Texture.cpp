@@ -11,7 +11,7 @@
 
 #include "System.hpp"
 
-Texture::Texture(std::string path) {
+Texture::Texture(const std::string& path) {
     glGenTextures(1, &_ID);
     glBindTexture(GL_TEXTURE_2D, _ID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

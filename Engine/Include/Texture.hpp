@@ -16,7 +16,7 @@ typedef struct {
 
 class Texture {
 public:
-    Texture(std::string path);
+    Texture(const std::string& path);
     void draw(glm::vec2 position, Shader shader, TextureQuad quad, glm::vec2 scale, float rotation,glm::vec4 tint);
 
     ~Texture();
