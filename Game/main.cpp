@@ -11,6 +11,8 @@
 
 const int screenWidth = 800, screenHeight = 600;
 
+static Renderer r;
+
 int main() {
     /* OpenGL init */
     Window window((WindowArgs){
@@ -20,8 +22,7 @@ int main() {
         .log = true
     });
 
-    Renderer renderer;
-    renderer.init(window);
+    r.init(window);
 
     Shader bgShader;
     bgShader.load("Game/Shaders/gradient.vert", "Game/Shaders/gradient.frag");
@@ -89,17 +90,18 @@ int main() {
 
         /* World Layer */
 
-        renderer.beginScene(cam);
+        r.beginScene(cam);
+        
+        r.render(knight, {450, 250});
+        player.render(r);
 
-        renderer.renderTexture(knight, {450, 250});
-        player.render(renderer);
-
-        renderer.endScene();
+        r.endScene();
         
         /* Surface Layer */
 
-        renderer.renderFont(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
-        renderer.renderFont(font, "sugondeez", {425, 300}, glm::vec4(1.f), 0.75f);
+        // r.renderFont(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
+        r.render(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
+        r.render(font, "sugondeez", {425, 300}, glm::vec4(1.f), 0.75f);
 
         window.refresh();
     }
