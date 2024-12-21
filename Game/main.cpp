@@ -24,6 +24,10 @@ int main() {
 
     r.init(window);
 
+    /* Load assets (including shaders)*/
+    Texture knight("Game/Resources/cool_guy.png");
+    Font versionFont("Game/Resources/Roboto-Regular.ttf");
+    Font font("Game/Resources/alagard.ttf");
     Shader bgShader;
     bgShader.load("Game/Shaders/gradient.vert", "Game/Shaders/gradient.frag");
 
@@ -55,8 +59,6 @@ int main() {
 
     Player player;
 
-    Texture knight("Game/Resources/cool_guy.png");
-
     Camera2D cam(screenWidth, screenHeight);
     cam.setZoom(2);
 
@@ -64,10 +66,6 @@ int main() {
             0.f, static_cast<float>(screenWidth),
             0.f, static_cast<float>(screenHeight),
             -1.f, 1.f);
-
-    Font versionFont("Game/Resources/Roboto-Regular.ttf");
-
-    Font font("Game/Resources/alagard.ttf");
 
     while (window.windowOpen()) {
         if (window.kb->isDown(SDLK_ESCAPE)) {
@@ -99,9 +97,8 @@ int main() {
         
         /* Surface Layer */
 
-        // r.renderFont(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
-        r.render(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
         r.render(font, "sugondeez", {425, 300}, glm::vec4(1.f), 0.75f);
+        r.render(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
 
         window.refresh();
     }
