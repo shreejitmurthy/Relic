@@ -24,6 +24,10 @@ int main() {
 
     r.init(window);
 
+    /* Load assets (including shaders) */
+    Texture knight("Game/Resources/cool_guy.png");
+    Font versionFont("Game/Resources/Roboto-Regular.ttf");
+    Font font("Game/Resources/alagard.ttf");
     Shader bgShader;
     bgShader.load("Game/Shaders/gradient.vert", "Game/Shaders/gradient.frag");
 
@@ -48,14 +52,12 @@ int main() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glBindVertexArray(0);
 
-    /* Game init */
+    /* Game Init */
 
     glm::vec3 topColor(0, 0.45f, 0.92f);
     glm::vec3 bottomColor(0.76f, 0.49f, 0.59f);
 
     Player player;
-
-    Texture knight("Game/Resources/cool_guy.png");
 
     Camera2D cam(screenWidth, screenHeight);
     cam.setZoom(2);
@@ -65,18 +67,18 @@ int main() {
             0.f, static_cast<float>(screenHeight),
             -1.f, 1.f);
 
-    Font versionFont("Game/Resources/Roboto-Regular.ttf");
-
-    Font font("Game/Resources/alagard.ttf");
-
     while (window.windowOpen()) {
+        /* Event polling */
         if (window.kb->isDown(SDLK_ESCAPE)) {
             window.open = false;
         }
 
+        /* Update "loop" */
         player.update(window.kb, window.deltaTime);
 
         cam.setPosition(player.position);
+
+        /* Background layer */
 
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -99,9 +101,8 @@ int main() {
         
         /* Surface Layer */
 
-        // r.renderFont(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
-        r.render(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
         r.render(font, "sugondeez", {425, 300}, glm::vec4(1.f), 0.75f);
+        r.render(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
 
         window.refresh();
     }
