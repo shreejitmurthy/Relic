@@ -52,7 +52,7 @@ int main() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glBindVertexArray(0);
 
-    /* Game Init */
+    /* Game Init */ 
 
     glm::vec3 topColor(0, 0.45f, 0.92f);
     glm::vec3 bottomColor(0.76f, 0.49f, 0.59f);
