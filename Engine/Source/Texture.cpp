@@ -36,11 +36,6 @@ Texture::Texture(const std::string& path) {
 
     _applyQuad(quad);
 
-    _indices = {
-            0, 1, 3,  // first triangle
-            1, 2, 3   // second triangle
-    };
-
     _genBuffers();
 }
 
@@ -73,8 +68,13 @@ void Texture::_genBuffers() {
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices), _vertices.data(), GL_STATIC_DRAW);
 
+    std::array<unsigned int, 6> indices = {
+            0, 1, 3,  // first triangle
+            1, 2, 3   // second triangle
+    };
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_indices), _indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -113,9 +113,10 @@ void Texture::draw(glm::vec2 position, Shader shader, TextureQuad quad, glm::vec
                      ? glm::vec4(1.f, 1.f, 1.f, 1.f)
                      : glm::vec4(tint.r, tint.g, tint.b, tint.a);
 
+    // not a fan of doing this, but it works
     shader.use();
-    shader.set_mat4("model", model);  // Pass the transformation matrix
-    shader.set_vec4("tint", tint);    // Pass the tint color
+    shader.set_mat4("model", model);
+    shader.set_vec4("tint", tint);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _ID);

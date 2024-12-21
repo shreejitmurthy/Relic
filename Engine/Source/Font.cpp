@@ -8,6 +8,13 @@
 
 #include "System.hpp"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
+constexpr int atlasWidth = 1024;
+constexpr int atlasHeight = 1024;
+constexpr int padding = 2;
+
 Font::Font(const std::string& path) {
     std::string fontPath = System::findPathUpwards(path);
     if (FT_Init_FreeType(&ft)) {
@@ -48,13 +55,13 @@ Font::Font(const std::string& path) {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             // now store character for later use
-            _characterData = {
+            Character characterData = {
                     texture,
                     glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
                     glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
                     static_cast<unsigned int>(face->glyph->advance.x)
             };
-            characters.insert(std::pair<char, Character>(c, _characterData));
+            characters.insert(std::pair<char, Character>(c, characterData));
         }
         glBindTexture(GL_TEXTURE_2D, 0);
     }
@@ -75,7 +82,6 @@ Font::Font(const std::string& path) {
 }
 
 Font::~Font() {
-    _characterData = {0};
 }
 
 void Font::print(std::string text, glm::vec2 position, Shader shader, glm::vec4 colour, float scale) {

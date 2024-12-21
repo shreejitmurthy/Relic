@@ -33,5 +33,4 @@ private:
     int _width, _height, _nrChannels;
     TextureQuad _quad;
     std::array<float, 32> _vertices;
-    std::array<unsigned int, 6> _indices;
 };

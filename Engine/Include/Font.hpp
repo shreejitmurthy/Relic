@@ -22,13 +22,13 @@ struct Character {
 class Font {
 public:
     Font(const std::string& path);
+    Font(const std::string& path, const std::string& atlasPath);
     ~Font();
     void print(std::string text, glm::vec2 position, Shader shader, glm::vec4 colour, float scale);
 private:
     unsigned int _VAO, _VBO;
     float _s;
     glm::vec4 _colour;
-    Character _characterData;
     FT_Library ft;
     std::map<char, Character> characters;
 };

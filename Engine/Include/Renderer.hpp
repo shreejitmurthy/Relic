@@ -1,3 +1,7 @@
+//
+// Created by Shreejit Murthy on 9/12/2024.
+//
+
 #pragma once
 
 #include "Shader.hpp"
@@ -18,8 +22,6 @@ public:
     void beginScene(Camera2D &camera);
     void endScene();
 
-    void load(const std::string& label, const std::string& path);
-
     void render(
             Texture& texture, 
             glm::vec2 position,
@@ -28,7 +30,7 @@ public:
             float rotation = 0.f,
             glm::vec4 tint = {0.f, 0.f, 0.f, 0.f});
 
-    void render(Font& font, std::string text, glm::vec2 position, glm::vec4 colour = glm::vec4(1.f), float scale = 1.f);;
+    void render(Font& font, std::string text, glm::vec2 position, glm::vec4 colour = glm::vec4(1.f), float scale = 1.f);
 
 private:
     Shader textureShader;
