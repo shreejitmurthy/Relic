@@ -7,6 +7,17 @@
 
 #include <log/log.h>
 
+/*
+ * Renderer Goal:
+ * - Automatic texture packing for optimisation, this must be done in renderer
+ *   and not in the Texture class. We ask to load a variadic amount of textures, then pack it.
+ *   Use stb_rect_pack or create our own texture packer that can be ran and checked if already exists
+ *   at initialisation.
+ *   Then ensure that the renderer knows the locations of each texture, as each texture has it's own
+ *   vertices. So the texture packed atlas will have its own vertices to subdivide the textures, then
+ *   each texture will have it's own vertices for quads.
+*/
+
 void Renderer::init(Window& window) {
     textureShader.load("Engine/Shaders/texture.vert", "Engine/Shaders/texture.frag");
     fontShader.load("Engine/Shaders/font.vert", "Engine/Shaders/font.frag");
