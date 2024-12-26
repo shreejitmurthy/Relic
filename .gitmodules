@@ -13,12 +13,6 @@
 [submodule "Vendor/imgui"]
 	path = Vendor/imgui
 	url = https://github.com/ocornut/imgui.git
-[submodule "Vendor/box2cpp"]
-	path = Vendor/box2cpp
-	url = https://github.com/HolyBlackCat/box2cpp.git
-[submodule "Vendor/box2d"]
-	path = Vendor/box2d
-	url = https://github.com/erincatto/box2d.git
 [submodule "Vendor/tmxlite"]
 	path = Vendor/tmxlite
 	url = https://github.com/fallahn/tmxlite.git
