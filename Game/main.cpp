@@ -19,7 +19,7 @@ int main() {
         .title = "Window",
         .width = screenWidth,
         .height = screenHeight,
-        .log = true
+        .log = false
     });
 
     r.init(window);
@@ -76,7 +76,7 @@ int main() {
         /* Update "loop" */
         player.update(window.kb, window.deltaTime);
 
-        cam.setPosition(player.position);
+        cam.setPosition({450, 250});
 
         /* Background layer */
 
