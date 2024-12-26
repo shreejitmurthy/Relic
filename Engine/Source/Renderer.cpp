@@ -16,6 +16,7 @@
  *   Then ensure that the renderer knows the locations of each texture, as each texture has it's own
  *   vertices. So the texture packed atlas will have its own vertices to subdivide the textures, then
  *   each texture will have it's own vertices for quads.
+ *   Use **only** for single textures, a spritesheet is already an atlas.
 */
 
 void Renderer::init(Window& window) {
