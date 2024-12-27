@@ -13,11 +13,11 @@ typedef struct {
     std::string title;
     int width, height;
     bool log;
-} WindowArgs;
+} window_init_desc;
 
 class Window {
 public:
-    Window(WindowArgs args);
+    Window(window_init_desc args);
     ~Window();
     bool windowOpen();
     void refresh();

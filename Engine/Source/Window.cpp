@@ -5,7 +5,7 @@
 #include "Window.hpp"
 #include <log/log.h>
 
-Window::Window(WindowArgs args) : width(args.width), height(args.height), _title(args.title) {
+Window::Window(window_init_desc args) : width(args.width), height(args.height), _title(args.title) {
     log_set_quiet(!args.log);
     kb = new Keyboard();
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
