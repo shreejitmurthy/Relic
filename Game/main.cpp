@@ -15,7 +15,7 @@ static Renderer r;
 
 int main() {
     /* OpenGL init */
-    Window window((WindowArgs){
+    Window window((window_init_desc){
         .title = "Window",
         .width = screenWidth,
         .height = screenHeight,
@@ -25,7 +25,7 @@ int main() {
     r.init(window);
 
     /* Load assets (including shaders) */
-    Texture knight("Game/Resources/cool_guy.png");
+    Texture knight("Game/Resources/Singleton/cool_guy.png");
     Font versionFont("Game/Resources/Roboto-Regular.ttf");
     Font font("Game/Resources/alagard.ttf");
     Shader bgShader;
@@ -52,7 +52,7 @@ int main() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glBindVertexArray(0);
 
-    /* Game Init */ 
+    /* Game init */ 
 
     glm::vec3 topColor(0, 0.45f, 0.92f);
     glm::vec3 bottomColor(0.76f, 0.49f, 0.59f);
@@ -63,13 +63,13 @@ int main() {
     cam.setZoom(2);
 
     glm::mat4 fontProjection = glm::ortho(
-            0.f, static_cast<float>(screenWidth),
+            0.f, static_cast<float>(screenWidth ),
             0.f, static_cast<float>(screenHeight),
             -1.f, 1.f);
 
     while (window.windowOpen()) {
         /* Event polling */
-        if (window.kb->isDown(SDLK_ESCAPE)) {
+        if (window.kb->isDown(KESC)) {
             window.open = false;
         }
 
@@ -101,7 +101,12 @@ int main() {
         
         /* Surface Layer */
 
-        r.render(font, "sugondeez", {425, 300}, glm::vec4(1.f), 0.75f);
+        r.render((font_render_desc){
+            .font = font,
+            .text = "sugondeez",
+            .position = {425, 300},
+            .scale = 0.75f
+        });
         r.render(versionFont, "Sigma Game", {10, 10}, {1, 1, 1, 0.2}, 0.5);
 
         window.refresh();
