@@ -14,6 +14,8 @@ typedef struct {
     float x, y, w, h;
 } TextureQuad;
 
+bool is_zero_colour(glm::vec4 colour);
+
 class Texture {
 public:
     Texture(const std::string& path);
