@@ -11,3 +11,9 @@
 ## 2024-12-20
 ![title](Screenshots/2024-12-20.png)
 
+# Minimum Viable Product
+
+- [ ] Window creation (GLFW/SDL2) and simple text rendering.
+- [ ] Handle user input (keyboard/mouse) and display a basic text buffer.
+- [ ] File handling (open, close, edit, save, etc.)
+- [ ] Basic modern UI
